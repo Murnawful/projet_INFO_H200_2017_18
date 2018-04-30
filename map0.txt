@@ -1,0 +1,34 @@
+size
+31
+GameObject(id,x,y)
+20
+1 2 1 4
+1 1 2 4
+1 9 9 4
+1 12 15 4
+1 2 1 10
+1 1 2 10
+1 4 6 10
+1 10 9 10
+1 11 12 10
+1 10 11 10
+1 9 10 10
+1 11 9 10
+1 11 11 10
+1 12 11 10
+1 13 11 10
+1 14 11 10
+1 15 11 10
+101 9 9 4 potion life 2
+102 10 9 3 potion 1
+302 20 20 5 staff 5 5 50
+Character(type,x,y,ml,force,smi,c,s, vr, cn)
+2
+Mage 10 10 3 5 1 1 10 1 1
+Loot
+101 -1 -1 4 potion life 2
+Loot
+102 10 9 3 potion 1
+Monster 15 15 4 4 5 750 2 2 6 2
+option
+exitEast
