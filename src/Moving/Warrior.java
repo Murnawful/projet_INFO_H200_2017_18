@@ -13,5 +13,5 @@ public class Warrior extends Player{
         super(X, Y, life, maxLife, force, inventory, sizeMaxInventory, color, exp, game);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
+
 }

@@ -3,7 +3,7 @@ package Objects;
 import Moving.Player;
 import Model.Deletable;
 
-public abstract class InventoryObject extends GameObject{
+public abstract class InventoryObject extends GameObject implements Usable{
 
     protected String description;
     protected boolean isInInventory = false;
@@ -28,13 +28,20 @@ public abstract class InventoryObject extends GameObject{
         notifyDeletableObserver();
     }
 
-    private void use(Player p){};
+    public void use(Player p){
+      if(this instanceof Weapon){
+        ((Weapon)this).equip(p);
+      }
+      else if(this instanceof Consumable){
+        ((Consumable)this).consume(p);
+      }
+    };
 
     public void setInInventory(){
         if(isInInventory){
             this.isInInventory = false;
         }else {
-            this.isInInventory = true;
+            this.isInInventory = false;
         }
     }
 
@@ -42,7 +49,7 @@ public abstract class InventoryObject extends GameObject{
     public boolean isObstacle() {
         return false;
     }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
 
     public String getDescription(){

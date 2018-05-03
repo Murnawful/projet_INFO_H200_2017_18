@@ -1,6 +1,7 @@
 package Model;
 
 import Objects.GameObject;
+import Objects.InventoryObject;
 
 import java.util.ArrayList;
 

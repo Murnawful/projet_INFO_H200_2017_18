@@ -3,8 +3,11 @@ package Objects;
 import Model.Activable;
 import Model.Deletable;
 import Model.DeletableObserver;
+import Moving.Monster;
 
 import java.util.ArrayList;
+
+
 
 public abstract class GameObject implements Activable, Deletable {
 
@@ -28,7 +31,7 @@ public abstract class GameObject implements Activable, Deletable {
     }
 
     public abstract boolean isObstacle();
-
+    
     public void activate(int points){};
 
     @Override
@@ -44,15 +47,15 @@ public abstract class GameObject implements Activable, Deletable {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
-
+    
     public void setPosX(int posX){
-        this.posX = posX;
+      this.posX = posX;
     }
-
+    
     public void setPosY(int posY){
-        this.posY = posY;
+      this.posY = posY;
     }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
 
     public int getPosX() {

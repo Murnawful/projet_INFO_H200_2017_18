@@ -20,11 +20,12 @@ public class BoostConsumable extends InventoryObject implements Consumable, Dele
 
     @Override
     public void consume(Player p) {
-        if(boostType == "force"){
+        if(boostType.compareTo("strength") == 0){
             p.setForce(p.getForce() + 1);
-        }else if(boostType == "life"){
-            p.modifyLife(1);
+        }else if(boostType.compareTo("life") == 0){
+            p.modififyMaxLife(1);
         }
+        
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
