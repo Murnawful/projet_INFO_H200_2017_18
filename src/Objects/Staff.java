@@ -58,6 +58,9 @@ public class Staff extends Weapon implements Directable{
     public boolean equip(Player p){
         boolean res = true;
         if (p instanceof Mage){
+            if (p.getWeaponEquip() != null){
+                p.getWeaponEquip().unequip(p);
+            }
             p.setWeaponEquip(this);
             ((Mage) p).setBlastRange(((Mage) p).getBlastRange() + bonusRange);
             p.setForce(p.getForce() + bonus);
@@ -70,6 +73,8 @@ public class Staff extends Weapon implements Directable{
 
     @Override
     public void unequip(Player p){
+        p.setInventory(p.getWeaponEquip());
+        p.getWeaponEquip().setInInventory();
         ((Mage) p).setBlastRange(((Mage) p).getBlastRange() - bonusRange);
         p.setForce(p.getForce() - bonus);
         p.setWeaponEquip(null);

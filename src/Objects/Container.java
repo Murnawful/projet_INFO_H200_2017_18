@@ -1,9 +1,10 @@
-package Model;
+package Objects;
 
-public interface Activable {
+public interface Container {
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
-    void activate(int points);
+    void drop();
 
+    void open();
 }

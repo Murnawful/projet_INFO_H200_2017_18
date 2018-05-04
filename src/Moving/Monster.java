@@ -1,7 +1,5 @@
 package Moving;
 
-import Model.Activable;
-import Model.Deletable;
 import Model.Game;
 import Objects.InventoryObject;
 

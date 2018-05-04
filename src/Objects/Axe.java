@@ -23,6 +23,9 @@ public class Axe extends Weapon implements Directable {
     public boolean equip(Player p){
         boolean res = true;
         if (p instanceof Warrior){
+            if (p.getWeaponEquip() != null){
+                p.getWeaponEquip().unequip(p);
+            }
             p.setWeaponEquip(this);
             p.setForce(p.getForce() + bonus);
         }else{
@@ -60,9 +63,9 @@ public class Axe extends Weapon implements Directable {
             }
             if (face == SOUTH){
                 for (int i = 0; i <= 4; i++){ int X = p.getFrontX(); int Y = p.getFrontY();
-                    if (i == 0 || i == 4){ X++; }
-                    if (i == 0 || i == 1){ Y--; }
-                    if (i == 3 || i == 4){ Y++; }
+                    if (i == 0 || i == 4){ Y--; }
+                    if (i == 0 || i == 1){ X--; }
+                    if (i == 3 || i == 4){ X++; }
                     attack(X, Y, force, game);
                     game.notifyView();
                     Thread.sleep(weight);
@@ -70,9 +73,9 @@ public class Axe extends Weapon implements Directable {
             }
             if (face == WEST){
                 for (int i = 0; i <= 4; i++){ int X = p.getFrontX(); int Y = p.getFrontY();
-                    if (i == 0 || i == 4){ Y--; }
-                    if (i == 0 || i == 1){ X--; }
-                    if (i == 3 || i == 4){ X++; }
+                    if (i == 0 || i == 4){ X++; }
+                    if (i == 0 || i == 1){ Y--; }
+                    if (i == 3 || i == 4){ Y++; }
                     attack(X, Y, force, game);
                     game.notifyView();
                     Thread.sleep(weight);
@@ -103,7 +106,6 @@ public class Axe extends Weapon implements Directable {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
-
 
     @Override
     public int getDirection() {

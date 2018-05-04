@@ -33,7 +33,7 @@ public abstract class Player extends Character {
             empItem = itemInHand[0] - 1 + (itemInHand[1]-1)*5;
         }
         else{
-            empItem = 1000; //emplacement de l'objet ﾃｩquipﾃｩ
+            empItem = 1000; //emplacement de l'objet équipé
         }
         if( empItem == 1000 && weaponEquip != null){
             if(inventory.size() != sizeMaxInventory){
@@ -44,8 +44,14 @@ public abstract class Player extends Character {
         else if(inventory.size() > empItem){
             objInHand = inventory.get(empItem);
             if (objInHand instanceof Consumable) {
-                ((Consumable)objInHand).consume(this);
-                inventory.remove(empItem);
+                if (objInHand instanceof BoostConsumable) {
+                    Thread t = new Thread((BoostConsumable) objInHand);
+                    inventory.remove(empItem);
+                    t.start();
+                }else {
+                    ((Consumable)objInHand).consume(this);
+                    inventory.remove(empItem);
+                }
             }
             else if (objInHand instanceof Weapon) {
                 if( ((Weapon)objInHand).equip(this)){

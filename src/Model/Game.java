@@ -1,12 +1,9 @@
 package Model;
 
 import Moving.*;
-import Moving.Character;
 import Objects.*;
 import View.Window;
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
-import java.io.*;
 import java.util.ArrayList;
 
 public class Game implements DeletableObserver{
@@ -15,7 +12,6 @@ public class Game implements DeletableObserver{
     private Player player;
     private Window window;
     private int size;
-    //private int numberOfBreakableBlocks = 10;
     private int posIc[] = {0,0};
     private MapBuilder mapBuilder;
 
@@ -95,7 +91,7 @@ public class Game implements DeletableObserver{
     synchronized public void delete(Deletable ps) {
         objects.remove(ps);
         ArrayList<InventoryObject> loot = null;
-        if( ps instanceof Monster ){
+        if(ps instanceof Monster){
             loot = ((Monster)ps).getInventory();
             for(InventoryObject elem : loot){
                 elem.setPosX(((Monster) ps).getPosX());

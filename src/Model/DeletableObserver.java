@@ -1,10 +1,9 @@
 package Model;
 
-import Objects.GameObject;
-
-import java.util.ArrayList;
 
 public interface DeletableObserver {
+
+    ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
     void delete(Deletable d);
 }

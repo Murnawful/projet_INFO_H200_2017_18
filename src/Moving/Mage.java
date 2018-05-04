@@ -2,8 +2,6 @@ package Moving;
 
 import Model.Game;
 import Objects.InventoryObject;
-import Objects.Staff;
-import Objects.Weapon;
 
 import java.util.ArrayList;
 
@@ -25,12 +23,6 @@ public class Mage extends Player {
 
     public void setBlastRange(int blastRange){
         this.blastRange = blastRange;
-    }
-
-    public void setBlastImage(int blastRange){
-        for(int i = 0; i <= blastRange; i++){
-            blastImage.add("blast.png");
-        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>

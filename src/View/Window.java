@@ -9,7 +9,6 @@ import javax.swing.JFrame;
 import Moving.Player;
 import Objects.GameObject;
 
-
 public class Window {
 
     private Map map = new Map();

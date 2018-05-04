@@ -4,9 +4,7 @@ import Model.Activable;
 import Model.Deletable;
 import Model.Directable;
 import Model.Game;
-import Objects.BlockBreakable;
-import Objects.GameObject;
-import Objects.InventoryObject;
+import Objects.*;
 
 import java.util.ArrayList;
 
@@ -52,7 +50,7 @@ public abstract class Character extends GameObject implements Directable, Deleta
             move(x, y);
         }
         //teste si on quitte la map
-        if (nextX == (game.getSize() - 1) || nextY == (game.getSize() - 1) ){
+        if (nextX == (game.getSize()) || nextY == (game.getSize()) ){
             System.out.println("map quitte");
         }
         game.notifyView();
@@ -92,6 +90,7 @@ public abstract class Character extends GameObject implements Directable, Deleta
         }else if (getLife() + change <= getMaxLife()) {
             setLife(getLife() + change);
         }else if(getLife() + change == getMaxLife()){
+            setLife(getMaxLife());
             System.out.println("Points de vie au maximum !");
         }
     }
@@ -110,6 +109,12 @@ public abstract class Character extends GameObject implements Directable, Deleta
         if(aimedObject != null){
             if(aimedObject instanceof InventoryObject){
                 pickUp(aimedObject);
+            }else if(aimedObject instanceof Chest){
+                Chest chest = (Chest) aimedObject;
+                int dir = chest.getDirection();
+                if((dir == NORTH && direction == SOUTH) || (dir == SOUTH && direction == NORTH) || (dir == EAST && direction == WEST) || (dir == WEST && direction == EAST)){
+                    chest.activate(0);
+                }
             }
         }
 
