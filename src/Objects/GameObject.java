@@ -29,7 +29,7 @@ public abstract class GameObject implements Activable, Deletable {
 
     public abstract boolean isObstacle();
 
-    public void activate(int points){};
+    public void activate(int points){}
 
     @Override
     public void attachDeletable(DeletableObserver po) {

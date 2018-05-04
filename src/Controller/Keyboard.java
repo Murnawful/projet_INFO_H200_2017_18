@@ -5,7 +5,6 @@ import java.awt.event.KeyListener;
 
 import Model.Game;
 import Model.Directable;
-import Moving.Mage;
 import Moving.Player;
 
 public class Keyboard implements KeyListener {

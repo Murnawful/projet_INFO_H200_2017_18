@@ -21,6 +21,8 @@ public abstract class Weapon extends InventoryObject implements Runnable{
     public abstract boolean equip(Player p);
 
     public void unequip(Player p){
+        p.setInventory(p.getWeaponEquip());
+        p.getWeaponEquip().setInInventory();
         p.setForce(p.getForce() - bonus);
         p.setWeaponEquip(null);
     }

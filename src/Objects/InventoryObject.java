@@ -1,8 +1,5 @@
 package Objects;
 
-import Moving.Player;
-import Model.Deletable;
-
 public abstract class InventoryObject extends GameObject{
 
     protected String description;
@@ -19,16 +16,10 @@ public abstract class InventoryObject extends GameObject{
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
-    public void drop(){
-
-    }
-
     @Override
     public void activate(int points){ // action de ramasser l'objet
         notifyDeletableObserver();
     }
-
-    private void use(Player p){};
 
     public void setInInventory(){
         if(isInInventory){

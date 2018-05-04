@@ -13,6 +13,7 @@ import Moving.Warrior;
 import Objects.*;
 
 public class MapBuilder {
+
     private String mapFile;
     private Game game;
     private int size;
@@ -135,9 +136,9 @@ public class MapBuilder {
 
         //BLOCKS
         if(id<100){
-            int lifePoint = Integer.valueOf(text[3]);
-            switch(id){
+            switch(id) {
                 case 001:
+                    int lifePoint = Integer.valueOf(text[3]);
                     BlockBreakable block = new BlockBreakable(x, y, lifePoint);
                     creation = block;
                     break;
@@ -151,7 +152,7 @@ public class MapBuilder {
                 case 101:
                     String boostType = text[5];
                     int boostLength = Integer.valueOf(text[6]);
-                    InventoryObject boostPotion = new BoostConsumable(x, y, color, description, boostType, boostLength);
+                    InventoryObject boostPotion = new BoostConsumable(x, y, color, description, boostType, boostLength, game);
                     creation = boostPotion;
                     break;
                 case 102:
@@ -162,7 +163,7 @@ public class MapBuilder {
             }
         }
         //WEAPONS
-        else{
+        else if(id<400){
             int color = Integer.valueOf(text[3]);
             String description = text[4];
             int bonus = Integer.valueOf(text[5]);
@@ -179,10 +180,56 @@ public class MapBuilder {
                     creation = staff;
                     break;
                 case 303:
-                    Sword sword = new Sword( x, y, color, description, bonus, game);
+                    InventoryObject sword = new Sword( x, y, color, description, bonus, game);
                     creation = sword;
                     break;
             }
+        }
+        //CONTAINER
+        else{
+            switch(id) {
+                case 401:
+                    ArrayList<InventoryObject> loot = new ArrayList<>();
+                    String[] inter = String.valueOf(text[3]).split(",");
+                    for (int i = 0; i < inter.length; i++) {
+                        if (inter[i].equals(";")) {
+                            ArrayList<String> text1 = new ArrayList<>();
+                            int j = i + 1;
+                            do {
+                                text1.add(inter[j]);
+                                j++;
+                            } while (!inter[j].equals("|"));
+                            String[] text2 = new String[text1.size()];
+                            text2 = text1.toArray(text2);
+                            GameObject creation1 = CreateObject(text2);
+                            loot.add((InventoryObject) creation1);
+                        }
+                    }
+                    Block pot = new Pot(x, y, loot, game);
+                    creation = pot;
+                    break;
+                case 402:
+                    ArrayList<InventoryObject> loot1 = new ArrayList<>();
+                    String[] inter1 = String.valueOf(text[3]).split(",");
+                    for (int i = 0; i < inter1.length; i++) {
+                        if (inter1[i].equals(";")) {
+                            ArrayList<String> text1 = new ArrayList<>();
+                            int j = i + 1;
+                            do {
+                                text1.add(inter1[j]);
+                                j++;
+                            } while (!inter1[j].equals("|"));
+                            String[] text2 = new String[text1.size()];
+                            text2 = text1.toArray(text2);
+                            GameObject creation1 = CreateObject(text2);
+                            loot1.add((InventoryObject) creation1);
+                        }
+                    }
+                    GameObject chest = new Chest(x, y, 1, loot1, game);
+                    creation = chest;
+                    break;
+            }
+
         }
         return creation;
     }

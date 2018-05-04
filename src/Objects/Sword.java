@@ -16,8 +16,11 @@ public class Sword extends Weapon {
 
     @Override
     public boolean equip(Player p){
+        if (p.getWeaponEquip() != null){
+            p.getWeaponEquip().unequip(p);
+        }
         p.setWeaponEquip(this);
-        p.setForce(bonus);
+        p.setForce(p.getForce() + bonus);
         return true;
     }
 

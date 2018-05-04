@@ -48,7 +48,7 @@ public class Map extends JPanel {
         this.requestFocusInWindow();
         posIc[0] = numInvX/2 + 1;
         posIc[1] = numInvY/2 + 1;
-        font = new Font("TimesRoman", Font.PLAIN, 32);
+        font = new Font("Arial", Font.PLAIN, 32);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<paintMethods>
@@ -175,9 +175,9 @@ public class Map extends JPanel {
         int div = 7 + this.addBlastRange;
         Image image = getToolkit().getImage("inventoryPlayer.jpg");
         g.drawImage(image, invWidth, 3*invHeight, 1000-invWidth, invHeight, this);
-        String textLive = "LIFE: " + player.getLife() + "/" + player.getMaxLife();
+        String textLive = "Life: " + player.getLife() + "/" + player.getMaxLife();
         g.drawString(textLive, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight/div);
-        String textStrengh = "Strengh: " + player.getForce();
+        String textStrengh = "Strength: " + player.getForce();
         g.drawString(textStrengh, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight*2/div);
         //Is the player a Mage
         if(addBlastRange == 1){
