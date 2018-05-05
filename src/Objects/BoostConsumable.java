@@ -13,7 +13,7 @@ public class BoostConsumable extends InventoryObject implements Consumable, Dele
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
     public BoostConsumable(int X, int Y, int color, String description, String boostType, int boostLength, Game game) {
-        super(X, Y, color, description, "boostPotion.png");
+        super(X, Y, color, description, "src/Images/boostPotion.png");
         this.boostType = boostType;
         this.boostLength = boostLength;
         this.game = game;

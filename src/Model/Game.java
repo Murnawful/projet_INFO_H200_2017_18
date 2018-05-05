@@ -20,7 +20,7 @@ public class Game implements DeletableObserver{
     public Game(Window window) {
         this.window = window;
 
-        mapBuilder = new MapBuilder(this, "map0.txt");
+        mapBuilder = new MapBuilder(this, "src/MapFiles/map0.txt");
         mapBuilder.build();
         objects.add(player);
 
@@ -92,10 +92,20 @@ public class Game implements DeletableObserver{
         objects.remove(ps);
         ArrayList<InventoryObject> loot = null;
         if(ps instanceof Monster){
-            loot = ((Monster)ps).getInventory();
+            Monster m = (Monster) ps;
+            loot = m.getInventory();
             for(InventoryObject elem : loot){
-                elem.setPosX(((Monster) ps).getPosX());
-                elem.setPosY(((Monster) ps).getPosY());
+                elem.setPosX(m.getPosX());
+                elem.setPosY(m.getPosY());
+                elem.attachDeletable(this);
+            }
+            this.objects.addAll(loot);
+        }else if (ps instanceof Pot){
+            Pot p = (Pot) ps;
+            loot = p.getLoot();
+            for(InventoryObject elem : loot){
+                elem.setPosX(p.getPosX());
+                elem.setPosY(p.getPosY());
                 elem.attachDeletable(this);
             }
             this.objects.addAll(loot);

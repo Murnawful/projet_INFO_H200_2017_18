@@ -95,10 +95,6 @@ public abstract class Character extends GameObject implements Directable, Deleta
         }
     }
 
-    public void modififyMaxLife(int change){
-        this.maxLife += change;
-    }
-
     public void action() {
         Activable aimedObject = null;
         for(GameObject object : game.getGameObjects()){

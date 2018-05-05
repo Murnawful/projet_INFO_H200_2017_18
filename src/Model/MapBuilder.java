@@ -67,31 +67,34 @@ public class MapBuilder {
 
         int numChara = Integer.valueOf(in.readLine());
         ArrayList<InventoryObject> loot = new ArrayList<InventoryObject>();
+
         for(int i=0; i<numChara; i++){
+
             text = in.readLine().split(" ");
             String Type = text[0];
+
             if(Type.compareTo("Loot") != 0){
+
                 int x = Integer.valueOf(text[1]);
                 int y = Integer.valueOf(text[2]);
                 int life = Integer.valueOf(text[3]);
                 int maxLife = Integer.valueOf(text[4]);
                 int force = Integer.valueOf(text[5]);
+
                 if("Warrior".compareTo(Type) == 0 ){
                     int sizeMaxInventory = Integer.valueOf(text[6]);
                     int color = Integer.valueOf(text[7]);
                     int exp = Integer.valueOf(text[8]);
                     Player player = new Warrior(x, y, life, maxLife, force, new ArrayList<InventoryObject>(), sizeMaxInventory, color, exp, game);
                     game.setPlayer(player);
-                }
-                else if("Mage".compareTo(Type) == 0 ){
+                } else if("Mage".compareTo(Type) == 0 ){
                     int blastRange = Integer.valueOf(text[6]);
                     int sizeMaxInventory = Integer.valueOf(text[7]);
                     int color = Integer.valueOf(text[8]);
                     int exp = Integer.valueOf(text[9]);
                     Player player = new Mage(x, y, life, maxLife, force, blastRange, new ArrayList<InventoryObject>(), sizeMaxInventory, color, exp, game);
                     game.setPlayer(player);
-                }
-                else if ("Monster".compareTo(Type) == 0 ){
+                } else if ("Monster".compareTo(Type) == 0 ){
                     // Creating monsters /!\ use Monster type as it is Runnable !!
                     int speed = Integer.valueOf(text[6]);
                     int viewRange = Integer.valueOf(text[7]);
@@ -103,13 +106,12 @@ public class MapBuilder {
                     t.start();
                     objects.add(monster);
                     //on reinitialise le loot
-                    loot = null;
+                    loot = new ArrayList<>();
                 }
-            }
-            else{
-                //Creating the loot for the monster
+            } else{
+                //Creating the loot for the monster; WARNING: Loot objects do not count in number of characters
                 text = in.readLine().split(" ");
-                GameObject creation = CreateObject(text);
+                GameObject creation = CreateObject(text,null);
                 loot.add( ((InventoryObject)creation) );
                 i-=1;
             }
@@ -120,15 +122,31 @@ public class MapBuilder {
         String[] text;
     
         int numObject = Integer.valueOf(in.readLine());
+        ArrayList<InventoryObject> loot = new ArrayList<InventoryObject>();
+
         for(int i=0; i<numObject; i++){
+
             text = in.readLine().split(" ");
-            GameObject creation = CreateObject(text);
-            creation.attachDeletable(game);
-            objects.add(creation);
+            String Type = text[0];
+
+            if(Type.compareTo("Loot") != 0){
+                GameObject creation = CreateObject(text,loot);
+                creation.attachDeletable(game);
+                objects.add(creation);
+                //on reinitialise le loot
+                loot = new ArrayList<>();
+            } else{
+                //Creating the loot for the container; WARNING: Loot objects do not count in number of GameObjects !!!
+                text = in.readLine().split(" ");
+                GameObject creation = CreateObject(text,null);
+                loot.add( ((InventoryObject)creation) );
+                i-=1;
+            }
         }
     }
   
-    private GameObject CreateObject(String[] text){
+    private GameObject CreateObject(String[] text, ArrayList<InventoryObject> loot){
+
         int id = Integer.valueOf(text[0]);
         int x = Integer.valueOf(text[1]);
         int y = Integer.valueOf(text[2]);
@@ -189,43 +207,11 @@ public class MapBuilder {
         else{
             switch(id) {
                 case 401:
-                    ArrayList<InventoryObject> loot = new ArrayList<>();
-                    String[] inter = String.valueOf(text[3]).split(",");
-                    for (int i = 0; i < inter.length; i++) {
-                        if (inter[i].equals(";")) {
-                            ArrayList<String> text1 = new ArrayList<>();
-                            int j = i + 1;
-                            do {
-                                text1.add(inter[j]);
-                                j++;
-                            } while (!inter[j].equals("|"));
-                            String[] text2 = new String[text1.size()];
-                            text2 = text1.toArray(text2);
-                            GameObject creation1 = CreateObject(text2);
-                            loot.add((InventoryObject) creation1);
-                        }
-                    }
                     Block pot = new Pot(x, y, loot, game);
                     creation = pot;
                     break;
                 case 402:
-                    ArrayList<InventoryObject> loot1 = new ArrayList<>();
-                    String[] inter1 = String.valueOf(text[3]).split(",");
-                    for (int i = 0; i < inter1.length; i++) {
-                        if (inter1[i].equals(";")) {
-                            ArrayList<String> text1 = new ArrayList<>();
-                            int j = i + 1;
-                            do {
-                                text1.add(inter1[j]);
-                                j++;
-                            } while (!inter1[j].equals("|"));
-                            String[] text2 = new String[text1.size()];
-                            text2 = text1.toArray(text2);
-                            GameObject creation1 = CreateObject(text2);
-                            loot1.add((InventoryObject) creation1);
-                        }
-                    }
-                    GameObject chest = new Chest(x, y, 1, loot1, game);
+                    GameObject chest = new Chest(x, y, 1, loot, game);
                     creation = chest;
                     break;
             }

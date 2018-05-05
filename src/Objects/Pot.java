@@ -21,13 +21,16 @@ public class Pot extends BlockBreakable implements Container{
 
     @Override
     public void drop() {
-        for (int i = 0; i <= loot.size(); i++){
-            InventoryObject obj = loot.get(i);
-            game.getGameObjects().add(obj);
-        }
+
     }
 
     @Override
     public void open(){}
+
+    ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
+
+    public ArrayList<InventoryObject> getLoot(){
+        return loot;
+    }
 
 }

@@ -150,9 +150,9 @@ public class Map extends JPanel {
 
     private void InventoryLeft(Graphics g){
         //////////////PARTIE GAUCHE
-        Image image = getToolkit().getImage("inventory.jpg");
+        Image image = getToolkit().getImage("src/Images/inventory.jpg");
         g.drawImage(image, 0, 3*invHeight, invWidth, invHeight, this);
-        image = getToolkit().getImage("icone.jpg");
+        image = getToolkit().getImage("src/Images/Imagesicone.jpg");
         //on dessine le nombre d'emplacements d'inventaire suivant x et y
         //ainsi que les elements d'inventaire s'y trouvant
         inventoryEmp = inventory.size();
@@ -164,7 +164,7 @@ public class Map extends JPanel {
                 g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, 3*invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
             }
             else{
-                image = getToolkit().getImage("icone.jpg");
+                image = getToolkit().getImage("src/Images/icone.jpg");
                 g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, 3*invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
             }
         }
@@ -173,7 +173,7 @@ public class Map extends JPanel {
     private void InventoryRight(Graphics g){
         //////////////PARTIE DROITE
         int div = 7 + this.addBlastRange;
-        Image image = getToolkit().getImage("inventoryPlayer.jpg");
+        Image image = getToolkit().getImage("src/Images/inventoryPlayer.jpg");
         g.drawImage(image, invWidth, 3*invHeight, 1000-invWidth, invHeight, this);
         String textLive = "Life: " + player.getLife() + "/" + player.getMaxLife();
         g.drawString(textLive, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight/div);
@@ -187,7 +187,7 @@ public class Map extends JPanel {
         String textWeapon = "Weapon: " ;
         g.drawString(textWeapon, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight*(3+addBlastRange)/div);
         if(player.getWeaponEquip() == null){
-            image = getToolkit().getImage("icone.jpg");
+            image = getToolkit().getImage("src/Images/icone.jpg");
         }
         else{
             image = getToolkit().getImage(player.getWeaponEquip().getAddImage());
@@ -197,7 +197,7 @@ public class Map extends JPanel {
         //////////////on dessine l'icone sﾃｩlectionnﾃｩe
         int xic = posIc[0];
         int yic = posIc[1];
-        image = getToolkit().getImage("icone_select.png");
+        image = getToolkit().getImage("src/Images/icone_select.png");
         if(posIc[0] == numInvX + 1){
             g.drawImage(image, invWidth + (1000-invWidth)*1/2, 3*invHeight+ invHeight*(7+addBlastRange)/15, side, side, this);
         }
@@ -212,7 +212,7 @@ public class Map extends JPanel {
     }
 
     public void paintAxe(Graphics g){
-        Image image = getToolkit().getImage("axe.png");
+        Image image = getToolkit().getImage("src/Images/axe.png");
         g.drawImage(image, posIc[1], posIc[1], invWidth, invHeight, this);
     }
 
