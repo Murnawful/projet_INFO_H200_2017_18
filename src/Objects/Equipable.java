@@ -2,9 +2,9 @@ package Objects;
 
 import Moving.Player;
 
-public interface Consumable { // interfacer
+public interface Equipable { // interfacer
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
-    public abstract void consume(Player p);
+    public abstract boolean equip(Player p);
 }

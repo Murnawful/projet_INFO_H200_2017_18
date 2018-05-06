@@ -11,6 +11,9 @@ public class BlockInactive extends Block {
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
     @Override
-    public void activate(int points) {}
+    public void activate(int points) {
+      // TODO Auto-generated method stub
+      
+    }
 
 }

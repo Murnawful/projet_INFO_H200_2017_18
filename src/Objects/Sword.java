@@ -16,22 +16,19 @@ public class Sword extends Weapon {
 
     @Override
     public boolean equip(Player p){
-        if (p.getWeaponEquip() != null){
-            p.getWeaponEquip().unequip(p);
-        }
         p.setWeaponEquip(this);
-        p.setForce(p.getForce() + bonus);
+        p.setStrength(bonus);
         return true;
     }
 
     @Override
     public void run(){
         Player p = game.getPlayer();
-        attack(p.getFrontX(), p.getFrontY(), p.getForce(), game);
+        attack(p.getFrontX(), p.getFrontY(), p.getStrength(), game);
     }
 
     @Override
-    public void attack(int x, int y,int force, Game game){
+    public void attack(int x, int y,int Strength, Game game){
         GameObject o = null;
         Player p = game.getPlayer();
         for(GameObject object : game.getGameObjects()){
@@ -42,10 +39,10 @@ public class Sword extends Weapon {
         }
         if (o instanceof Character){
             Character aimedObject = (Character) o;
-            aimedObject.modifyLife(-force);
+            aimedObject.modifyLife(-Strength);
         }else if(o instanceof BlockBreakable){
             BlockBreakable aimedObject = (BlockBreakable) o;
-            aimedObject.activate(force);
+            aimedObject.activate(Strength);
             game.notifyView();
         }
     }

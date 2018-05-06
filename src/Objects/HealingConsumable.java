@@ -10,7 +10,7 @@ public class HealingConsumable extends InventoryObject implements Consumable, De
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
     public HealingConsumable(int X, int Y, int color, String description, int healingPower) {
-        super(X, Y, color, description, "src/Images/healingPotion.png");
+        super(X, Y, color, description, "healingPotion.png");
         this.healingPower = healingPower;
     }
 
