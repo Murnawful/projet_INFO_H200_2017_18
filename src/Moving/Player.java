@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 public abstract class Player extends Character {
 
-    protected int exp;
+    private int exp;
     //Position de l'item que le joueur posssède dans son inventaire
-    protected int itemInHand[];
-    protected Weapon weaponEquip = null;
-    protected InventoryObject objInHand = null;
+    private int itemInHand[];
+    private Weapon weaponEquip = null;
+    private InventoryObject objInHand = null;
     private final int numInvY = 2;
     private final int numInvX = 5;
 

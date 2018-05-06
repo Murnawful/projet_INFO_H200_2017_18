@@ -125,6 +125,10 @@ public class Game implements DeletableObserver{
         this.size = size;
     }
 
+    public void setGameObjects(ArrayList<GameObject> objects){
+        this.objects = objects;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
 
     public ArrayList<GameObject> getGameObjects() {

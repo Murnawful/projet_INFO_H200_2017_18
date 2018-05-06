@@ -27,7 +27,9 @@ public abstract class GameObject implements Activable, Deletable {
         return this.posX == x && this.posY == y;
     }
 
-    public abstract boolean isObstacle();
+    synchronized public boolean isObstacle(){
+        return false;
+    }
 
     public void activate(int points){}
 

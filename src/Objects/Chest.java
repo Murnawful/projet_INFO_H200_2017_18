@@ -1,12 +1,13 @@
 package Objects;
 
 import Model.Directable;
+import Model.Dropper;
 import Model.Game;
 import Moving.Player;
 
 import java.util.ArrayList;
 
-public class Chest extends GameObject implements Container, Directable {
+public class Chest extends GameObject implements Dropper, Directable {
 
     private ArrayList<InventoryObject> loot;
     private Game game;
@@ -44,6 +45,9 @@ public class Chest extends GameObject implements Container, Directable {
             }
         }
     }
+
+    @Override
+    public void dropAll(){}
 
     @Override
     public boolean isObstacle() {

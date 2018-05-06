@@ -1,10 +1,11 @@
 package Objects;
 
+import Model.Dropper;
 import Model.Game;
 
 import java.util.ArrayList;
 
-public class Pot extends BlockBreakable implements Container{
+public class Pot extends BlockBreakable implements Dropper {
 
     private ArrayList<InventoryObject> loot;
     private Game game;
@@ -21,6 +22,11 @@ public class Pot extends BlockBreakable implements Container{
 
     @Override
     public void drop() {
+
+    }
+
+    @Override
+    public void dropAll() {
 
     }
 

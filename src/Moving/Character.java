@@ -11,11 +11,11 @@ import java.util.ArrayList;
 public abstract class Character extends GameObject implements Directable, Deletable {
 
     protected int life;
-    protected int direction;
+    private int direction;
     protected int force;
     protected ArrayList<InventoryObject> inventory;
     protected int sizeMaxInventory;
-    protected int maxLife;
+    private int maxLife;
     protected Game game;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
