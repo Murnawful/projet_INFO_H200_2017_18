@@ -5,7 +5,7 @@ import Model.Deletable;
 
 public class BlockBreakable extends Block implements Deletable, Activable {
 
-    private int lifepoints;
+    protected int lifepoints;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 

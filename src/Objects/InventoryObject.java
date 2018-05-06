@@ -2,8 +2,8 @@ package Objects;
 
 public abstract class InventoryObject extends GameObject{
 
-    protected String description;
-    protected boolean isInInventory = false;
+    private String description;
+    private boolean isInInventory = false;
     private String addImage;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>

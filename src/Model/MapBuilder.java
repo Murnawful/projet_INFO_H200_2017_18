@@ -17,14 +17,13 @@ public class MapBuilder {
     private String mapFile;
     private Game game;
     private int size;
-    private ArrayList<GameObject> objects;
+    private ArrayList<GameObject> objects = new ArrayList<>();
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
     public MapBuilder(Game game, String firstMap){
         this.game = game;
         this.mapFile = firstMap;
-        this.objects = game.getGameObjects();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<Builder>
@@ -58,6 +57,8 @@ public class MapBuilder {
         } catch( IOException e){
             System.out.println(e);
         }
+        game.setGameObjects(objects); // returns the list of objects to Game
+        objects = new ArrayList<>(); // empties the list
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<mapMethods>
