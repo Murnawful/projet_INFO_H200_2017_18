@@ -1,69 +1,31 @@
 package Objects;
 
 import Model.Deletable;
-import Model.Game;
 import Moving.Player;
 
-public class BoostConsumable extends InventoryObject implements Consumable, Deletable, Runnable {
+public class BoostConsumable extends InventoryObject implements Consumable, Deletable {
 
     private String boostType;
     private int boostLength;
-    private Game game;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public BoostConsumable(int X, int Y, int color, String description, String boostType, int boostLength, Game game) {
-        super(X, Y, color, description, "src/Images/boostPotion.png");
+    public BoostConsumable(int X, int Y, int color, String description, String boostType, int boostLength) {
+        super(X, Y, color, description, "boostPotion.png");
         this.boostType = boostType;
         this.boostLength = boostLength;
-        this.game = game;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods
 
     @Override
-    public void run() {
-        try{
-            Player p = game.getPlayer();
-            consume(p);
-            Thread.sleep(boostLength);
-            vanish(p);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void consume(Player p) {
-        if(boostType.equals("force")){
-            p.setForce(p.getForce() + 1);
-        }else if(boostType.equals("life")){
-            p.modifyLife(1);
-        }else if(boostType.equals("force+")){
-            p.setForce(p.getForce() + 2);
-        }else if(boostType.equals("life+")) {
-            p.modifyLife(2);
-        }else if(boostType.equals("force++")){
-            p.setForce(p.getForce() + 3);
-        }else if(boostType.equals("life++")) {
-            p.modifyLife(3);
+        if(boostType.compareTo("strength") == 0){
+            p.setStrength(p.getStrength() + 1);
+        }else if(boostType.compareTo("life") == 0){
+            p.modififyMaxLife(1);
         }
-    }
-
-    public void vanish(Player p){
-        if(boostType.equals("force")){
-            p.setForce(p.getForce() - 1);
-        }else if(boostType.equals("life")){
-            p.modifyLife(-1);
-        }else if(boostType.equals("force+")){
-            p.setForce(p.getForce() - 2);
-        }else if(boostType.equals("life+")) {
-            p.modifyLife(-2);
-        }else if(boostType.equals("force++")){
-            p.setForce(p.getForce() - 3);
-        }else if(boostType.equals("life++")) {
-            p.modifyLife(-3);
-        }
+        
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>

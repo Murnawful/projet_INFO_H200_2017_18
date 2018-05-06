@@ -9,9 +9,11 @@ import javax.swing.JFrame;
 import Moving.Player;
 import Objects.GameObject;
 
+
 public class Window {
 
-    private Map map = new Map();
+    private Map map;
+    private Dimension dim;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
@@ -20,10 +22,11 @@ public class Window {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setBounds(0, 0, 1000, 1020);
         window.getContentPane().setBackground(Color.gray);
+        map = new Map();
         window.getContentPane().add(this.map);
-        window.setVisible(true);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
+        window.setVisible(true);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -31,16 +34,11 @@ public class Window {
     public void update() {
         this.map.redraw();
     }
-
-    public void moveIc(int direction){
-        map.moveIc(direction);
-        this.map.redraw();
-    }
-
+    
     public void swingAxe(){
-        map.swingAxe();
-        this.map.redraw();
-    }
+      map.swingAxe();
+      this.map.redraw();
+  }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
@@ -48,10 +46,10 @@ public class Window {
         map.setInventoryState(inventoryState);
         this.map.redraw();
     }
-
+    
     public void setSize(int size){
-        this.map.setSize(size);
-        this.map.redraw();
+      this.map.setSize(size);
+      this.map.redraw();
     }
 
     public void setKeyListener(KeyListener keyboard) {
@@ -66,10 +64,15 @@ public class Window {
     public void setPlayer(Player player) {
         this.map.setPlayer(player);
     }
+    
+    public void setInvX(int numInvX){
+      map.setInvX(numInvX);
+    }
+    
+    public void setInvY(int numInvY){
+      map.setInvY(numInvY);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
-
-    public int[] getPosIc(){
-        return map.getPosIc();
-    }
+    
 }

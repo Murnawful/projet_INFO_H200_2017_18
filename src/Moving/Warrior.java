@@ -9,9 +9,9 @@ public class Warrior extends Player{
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Warrior(int X, int Y, int life, int maxLife, int force, ArrayList<InventoryObject> inventory, int sizeMaxInventory, int color, int exp, Game game) {
-        super(X, Y, life, maxLife, force, inventory, sizeMaxInventory, color, exp, game);
+    public Warrior(int X, int Y, int life, int maxLife, int force, ArrayList<InventoryObject> inventory, int sizeMaxInventory, int color, Game game) {
+        super(X, Y, life, maxLife, force, inventory, sizeMaxInventory, color, game);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
+
 }
