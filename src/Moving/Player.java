@@ -1,109 +1,123 @@
 package Moving;
 
-import Model.Game;
-import Objects.*;
+import Objects.Consumable;
+import Objects.InventoryObject;
+import Objects.Weapon;
 
 import java.util.ArrayList;
 
-public abstract class Player extends Character {
+import Model.Game;
 
-    private int exp;
-    //Position de l'item que le joueur posssède dans son inventaire
-    private int itemInHand[];
-    private Weapon weaponEquip = null;
-    private InventoryObject objInHand = null;
-    private final int numInvY = 2;
-    private final int numInvX = 5;
+public class Player extends Character {
 
-    ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
+  //Position de l'item que le joueur posssède dans son inventaire
+  private int posIc[];
+  private Weapon weaponEquip = null;
+  private final int numInvY = 2;
+  private final int numInvX = 5;
 
-    public Player(int X, int Y, int life, int maxLife, int force, ArrayList<InventoryObject> inventory, int sizeMaxInventory, int color, int exp, Game game) {
-        super(X, Y, life, maxLife, force, inventory, sizeMaxInventory, color, game);
-        this.exp = exp;
+
+  ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
+
+  public Player(int X, int Y, int life, int maxLife, int strenght, ArrayList<InventoryObject> inventory, int sizeMaxInventory, int color, Game game) {
+    super(X, Y, life, maxLife, strenght, inventory, sizeMaxInventory, color, game);
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
+
+  @Override
+  public void activate(int points) {}
+
+  //Si il n'y a pas d'arguments au drop, on drop l'item en main
+  public void drop(){
+    int CoordOjectInHand = this.getItemInHand();
+    InventoryObject objInHand = this.getObjectInHand( CoordOjectInHand);
+    if(objInHand != null){
+      super.drop( CoordOjectInHand);
     }
+  }
 
-    ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
-
-    @Override
-    public void activate(int points) {}
-
-    public void useItem() {
-        int empItem;
-        if (itemInHand[0] != this.sizeMaxInventory/2 + 1){
-            empItem = itemInHand[0] - 1 + (itemInHand[1]-1)*5;
+  public void useItem() {
+    int  CoordOjectInHand = this.getItemInHand();
+    InventoryObject objInHand = this.getObjectInHand( CoordOjectInHand);
+    if(objInHand != null){
+      if(objInHand == weaponEquip){
+        if(inventory.size() != sizeMaxInventory){
+          this.inventory.add(weaponEquip);
+          this.weaponEquip.unequip(this);
         }
-        else{
-            empItem = 1000; //emplacement de l'objet équipé
+      }
+      else{
+        if(objInHand.use(this) == true){
+          inventory.remove( CoordOjectInHand);
         }
-        if( empItem == 1000 && weaponEquip != null){
-            if(inventory.size() != sizeMaxInventory){
-                this.inventory.add(weaponEquip);
-                this.weaponEquip.unequip(this);
-            }
-        }
-        else if(inventory.size() > empItem){
-            objInHand = inventory.get(empItem);
-            if (objInHand instanceof Consumable) {
-                if (objInHand instanceof BoostConsumable) {
-                    Thread t = new Thread((BoostConsumable) objInHand);
-                    inventory.remove(empItem);
-                    t.start();
-                }else {
-                    ((Consumable)objInHand).consume(this);
-                    inventory.remove(empItem);
-                }
-            }
-            else if (objInHand instanceof Weapon) {
-                if( ((Weapon)objInHand).equip(this)){
-                    inventory.remove(empItem);
-                }
-            }
-        }
-        game.notifyView();
+      }
+      game.notifyView();
     }
 
-    public void attack(){
-        Thread weaponThread = new Thread(weaponEquip);
-        weaponThread.start();
+    game.notifyView();
+  }
+
+  public void attack(){
+    Thread weaponThread = new Thread(weaponEquip);
+    weaponThread.start();
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
+
+  public void setPosIc(int posIc[]){
+    this.posIc = posIc;
+  }
+
+  public void setWeaponEquip( Weapon weaponEquip){
+    this.weaponEquip = weaponEquip;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
+
+  public int[] getPosIc(){
+    return this.posIc;
+  }
+
+  public Weapon getWeaponEquip(){
+    return this.weaponEquip;
+  }
+
+  public int getNumInvX(){
+    return this.numInvX;
+  }
+
+  public int getNumInvY(){
+    return this.numInvY;
+  }
+
+  //permet de passer du language PosIc plus adapté à la map
+  //au language CoordOjectInHand qui se réfère directement à sa position dans l'arrayList
+  private int getItemInHand(){
+    int  CoordOjectInHand = 0;
+    if (posIc[0] != this.sizeMaxInventory/2 + 1){
+      CoordOjectInHand = posIc[0] - 1 + (posIc[1]-1)*5;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
-
-    public void setForce(int force){
-        this.force = force;
+    else{
+      CoordOjectInHand = this.sizeMaxInventory; //emplacement de l'objet équipé
     }
+    return  CoordOjectInHand;
+  }
 
-    public void setExp(int exp){
-        this.exp = exp;
+
+  //Permet de savoir quel object on a dans la main
+  private InventoryObject getObjectInHand(int  CoordOjectInHand){
+    InventoryObject objInHand = null;
+    //si a l'emplacement se trouve un objet: on l'ajoute
+    if( CoordOjectInHand < this.inventory.size()){
+      objInHand = this.inventory.get( CoordOjectInHand);
     }
-
-    public void setItemInHand(int itemInHand[]){
-        this.itemInHand = itemInHand;
+    //si notre object est l'arme équipée
+    else if( CoordOjectInHand == this.sizeMaxInventory){
+      objInHand = this.weaponEquip;
     }
+    return objInHand;
+  }
 
-    public void setWeaponEquip( Weapon weaponEquip){
-        this.weaponEquip = weaponEquip;
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
-
-    public int getExp(){
-        return exp;
-    }
-
-    public int[] getItemInHand(){
-        return this.itemInHand;
-    }
-
-    public Weapon getWeaponEquip(){
-        return this.weaponEquip;
-    }
-
-    public int getNumInvX(){
-        return this.numInvX;
-    }
-
-    public int getNumInvY(){
-        return this.numInvY;
-    }
 }

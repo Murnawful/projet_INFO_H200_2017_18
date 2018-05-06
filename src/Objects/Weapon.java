@@ -3,7 +3,7 @@ package Objects;
 import Model.Game;
 import Moving.*;
 
-public abstract class Weapon extends InventoryObject implements Runnable{
+public abstract class Weapon extends InventoryObject implements Runnable, Equipable{
 
     protected int bonus;
     protected Game game;
@@ -21,9 +21,10 @@ public abstract class Weapon extends InventoryObject implements Runnable{
     public abstract boolean equip(Player p);
 
     public void unequip(Player p){
-        p.setInventory(p.getWeaponEquip());
-        p.getWeaponEquip().setInInventory();
-        p.setForce(p.getForce() - bonus);
+        if(super.getDescription() == "staff"){
+            ((Mage) p).setBlastRange(((Mage) p).getBlastRange() - bonus);
+        }
+        p.setStrength(p.getStrength() - bonus);
         p.setWeaponEquip(null);
     }
 
@@ -33,16 +34,6 @@ public abstract class Weapon extends InventoryObject implements Runnable{
     public boolean isObstacle() {
         return false;
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
-
-    public void setBonus(int bonus){
-        this.bonus = bonus;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
-
-    public int getBonus(){
-        return bonus;
-    }
+    
+    
 }

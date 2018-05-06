@@ -28,25 +28,25 @@ public class Staff extends Weapon implements Directable{
         int face = p.getDirection();
         try{
             Mage m = (Mage) p;
-            int force = m.getForce();
+            int Strength = m.getStrength();
             for(int i = 0; i <= m.getBlastRange(); i++){
                 if (face == NORTH){
-                    attack(X,Y-i,force, game);
+                    attack(X,Y-i,Strength, game);
                     Thread.sleep(speed);
                 }else if(face == EAST){
-                    attack(X+i,Y,force, game);
+                    attack(X+i,Y,Strength, game);
                     Thread.sleep(speed);
                 }else if (face == SOUTH){
-                    attack(X,Y+i,force, game);
+                    attack(X,Y+i,Strength, game);
                     Thread.sleep(speed);
                 }else if (face == WEST){
-                    attack(X-i,Y,force, game);
+                    attack(X-i,Y,Strength, game);
                     Thread.sleep(speed);
                 }
-                if(force - 1 > 0){
-                    force -= 1;
+                if(Strength - 1 > 0){
+                  Strength -= 1;
                 }else{
-                    force = 0;
+                  Strength = 0;
                 }
             }
         }catch (Exception e) {
@@ -58,12 +58,9 @@ public class Staff extends Weapon implements Directable{
     public boolean equip(Player p){
         boolean res = true;
         if (p instanceof Mage){
-            if (p.getWeaponEquip() != null){
-                p.getWeaponEquip().unequip(p);
-            }
             p.setWeaponEquip(this);
             ((Mage) p).setBlastRange(((Mage) p).getBlastRange() + bonusRange);
-            p.setForce(p.getForce() + bonus);
+            p.setStrength(p.getStrength() + bonus);
         }else{
             res = false;
             System.out.println("Vous ne pouvez pas équiper cette arme !");
@@ -73,10 +70,8 @@ public class Staff extends Weapon implements Directable{
 
     @Override
     public void unequip(Player p){
-        p.setInventory(p.getWeaponEquip());
-        p.getWeaponEquip().setInInventory();
         ((Mage) p).setBlastRange(((Mage) p).getBlastRange() - bonusRange);
-        p.setForce(p.getForce() - bonus);
+        p.setStrength(p.getStrength() - bonus);
         p.setWeaponEquip(null);
     }
 
