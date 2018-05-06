@@ -1,0 +1,22 @@
+size
+20
+GameObject(id,x,y)
+6
+1 2 1 4
+1 1 2 4
+1 9 9 4
+1 12 15 4
+101 9 9 4 potion life 2
+102 10 9 3 potion 1
+Character(type,x,y,ml,force,smi,c,s, vr, cn)
+2
+Loot
+101 -1 -1 4 potion life 2
+Loot
+102 10 9 3 potion 1
+Monster 15 15 4 4 5 750 2 2 6 2
+Monster 2 2 4 4 5 750 2 2 6 2
+option
+2
+exitWest 0
+exitNorth 2
