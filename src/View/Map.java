@@ -1,6 +1,7 @@
 package View;
 
 import Model.Directable;
+import Moving.Character;
 import Moving.Mage;
 import Moving.Player;
 import Objects.GameObject;
@@ -10,36 +11,39 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Map extends JPanel {
 
+    ///////////////////////////////////////////////////////////////////////////////////////<Content>
     private static final long serialVersionUID = 1L;
+    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    private ArrayList<GameObject> objectsPaintLater; // list of the last objects to be painted on map
+    private ArrayList<InventoryObject> inventory = new ArrayList<InventoryObject>();
     private Player player;
-    private ArrayList<GameObject> objects = new ArrayList<>();
-    private ArrayList<InventoryObject> inventory = new ArrayList<>();
     private boolean inventoryState;
+
     private boolean axeSwung = false;
     private int size;
-    //vaut un si oui 0 sinon
-    int addBlastRange = 0;
+    private int addBlastRange = 0; // 1 for true, 0 for false
 
-    private final int numInvY = 2;
-    private final int numInvX = 5;
-    private final int invWidth = 1000*7/12;
-    private final int invHeight = 255;
-    //taille de l'icone
-    private final int side = 60;
-    //Nombre d'éléments dans l'inventaire
-    private int inventoryEmp;
+    ///////////////////////////////////////////////////////////////////////////////////////<Inventory>
+    private int numInvY = 0;
+    private int numInvX = 0;
+    private int side = 0; // icon size
+    private int inventoryEmp; // number of elements in inventory
     private Font font;
-    //si posIc = {numInvY, numInvX+1} on est ds la selection d'arme
-    private int posIc[]= {numInvY/2 + 1,numInvX/2 + 1};
+    private int posIc[]= {numInvY/2 + 1,numInvX/2 + 1}; // if posIc = {numInvY, numInvX+1}, equipment icon is selected
 
-    private final int width = 30; // original values for width and height: 48 and for xy multiplier: 50
+    ///////////////////////////////////////////////////////////////////////////////////////<Dimsensions>
+    private final int width = 30;
     private final int height = 30;
     private final int xMulti = 32;
     private final int yMulti = 32;
+    private int invWidth = 0;
+    private int invHeight = 0;
+    private int mapWidth = 0;
+    private int mapHeight = 0;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
@@ -48,54 +52,75 @@ public class Map extends JPanel {
         this.requestFocusInWindow();
         posIc[0] = numInvX/2 + 1;
         posIc[1] = numInvY/2 + 1;
-        font = new Font("Arial", Font.PLAIN, 32);
+        this.objectsPaintLater = new ArrayList<GameObject>();
+        // loads all images to be drawn on map
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<paintMethods>
 
     public void paint(Graphics g) {
+        if(objectsPaintLater != null){ // empties the list of objects in standby
+            objectsPaintLater.clear();
+        }
         g.setFont(font);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight() );
-        for (int i = 0; i < size; i++) { // Virer la valeur 20 et parametrer ca
+        for (int i = 0; i < size; i++) { // paints the grid of the map
             for (int j = 0; j < size; j++) {
                 int x = i;
                 int y = j;
                 g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * xMulti, y * yMulti, width, height); //dessine l'interieur( commnence en haut à droite )
+                g.fillRect(x * xMulti, y * yMulti, width, height); // paints the interior (starts from top right)
                 g.setColor(Color.BLACK);
-                g.drawRect(x * xMulti, y * yMulti, width, height); //dessine le contour( commnence en haut à droite )
+                g.drawRect(x * xMulti, y * yMulti, width, height); // paints contour (starts from top right)
             }
         }
-        for (GameObject object : this.objects) {
-            int x = object.getPosX();
-            int y = object.getPosY();
-            int color = object.getColor();
-
-            if (color == 0) {
-                g.setColor(Color.DARK_GRAY);
-            } else if (color == 1) {
-                g.setColor(Color.GRAY);
-            } else if (color == 2) {
-                g.setColor(Color.BLUE);
-            } else if (color == 3) {
-                g.setColor(Color.GREEN);
-            } else if (color == 4) {
-                g.setColor(Color.RED);
-            } else if (color == 5) {
-                g.setColor(Color.ORANGE);
+        for (GameObject object : objects) {
+            if(object instanceof Character){ // Player must be painted last
+                objectsPaintLater.add(object);
             }
-
-            g.fillRect(x * xMulti, y * yMulti, width, height);
-            g.setColor(Color.BLACK);
-            g.drawRect(x * xMulti, y * yMulti, width, height);
-            paintLine(g, object,x,y);
+            else{
+                paintObject(g, object); // immediately paints objects
+            }
+        }
+        for(GameObject object : objectsPaintLater){ // paints objects standing by
+            paintObject(g, object);
         }
         if( getInventoryState()){
             paintInventory(g);
         }
         if(axeSwung){
             paintAxe(g);
+        }
+    }
+
+    private void paintObject(Graphics g, GameObject object) {
+        int x = object.getPosX();
+        int y = object.getPosY();
+        if(object instanceof InventoryObject){
+
+        }
+        int color = object.getColor();
+
+        if (color == 0) { // paints the object accordingly
+            g.setColor(Color.DARK_GRAY);
+        } else if (color == 1) {
+            g.setColor(Color.GRAY);
+        } else if (color == 2) {
+            g.setColor(Color.BLUE);
+        } else if (color == 3) {
+            g.setColor(Color.GREEN);
+        } else if (color == 4) {
+            g.setColor(Color.RED);
+        } else if (color == 5) {
+            g.setColor(Color.ORANGE);
+        }
+
+        g.fillRect(x * xMulti, y * yMulti, width, height);
+        g.setColor(Color.BLACK);
+        g.drawRect(x * xMulti, y * yMulti, width, height);
+        if(object instanceof Directable && !(object instanceof InventoryObject)) {
+            paintLine(g, object,x,y); // if object is directable, paints a line to indicate front
         }
     }
 
@@ -123,88 +148,67 @@ public class Map extends JPanel {
 
             int xCenter = x * xMulti + width/2;
             int yCenter = y * yMulti + height/2;
-            g.drawLine(xCenter, yCenter, xCenter + deltaX, yCenter + deltaY); // paint line on character
+            g.drawLine(xCenter, yCenter, xCenter + deltaX, yCenter + deltaY); // paints line on character
         }
-    }
-
-    //copié collé : https://java.developpez.com/faq/gui?page=Les-images#Comment-combiner-deux-images
-    public static BufferedImage CombineImage(BufferedImage image1, BufferedImage image2){
-        Graphics2D g2d = image1.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-
-        g2d.drawImage(image2, 0, 0, null);
-
-        g2d.dispose();
-
-        return image1 ;
     }
 
     private void paintInventory(Graphics g){
-        //on charge l'image du fond de l'intentaire
-        this.InventoryLeft(g);
-        this.InventoryRight(g);
+        this.InventoryLeft(g); // loading the left part of the inventory
+        this.InventoryRight(g); // loading the right part of the inventory
     }
 
-    private void InventoryLeft(Graphics g){
-        //////////////PARTIE GAUCHE
+    private void InventoryLeft(Graphics g){ //////////////LEFT PART
         Image image = getToolkit().getImage("src/Images/inventory.jpg");
-        g.drawImage(image, 0, 3*invHeight, invWidth, invHeight, this);
+        g.drawImage(image, 0, mapHeight-invHeight, invWidth, invHeight, this);
         image = getToolkit().getImage("src/Images/Imagesicone.jpg");
-        //on dessine le nombre d'emplacements d'inventaire suivant x et y
-        //ainsi que les elements d'inventaire s'y trouvant
         inventoryEmp = inventory.size();
-        for(int i=0; i<(numInvX*numInvY); i++){
+        for(int i=0; i<(numInvX*numInvY); i++){ // paints number of inventory spaces according to their X and Y coordinates. Same goes for elements present in inventory
             int xic = i%numInvX + 1;
             int yic = i/numInvX + 1;
-            if(i<inventoryEmp){
+            if(i<inventoryEmp){ // paints objects if in inventory
                 image = getToolkit().getImage(inventory.get(i).getAddImage());
-                g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, 3*invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
-            }
-            else{
+                g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, mapHeight-invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
+            } else{ // paints a simple icon
                 image = getToolkit().getImage("src/Images/icone.jpg");
-                g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, 3*invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
+                g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, mapHeight-invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
             }
         }
     }
 
-    private void InventoryRight(Graphics g){
-        //////////////PARTIE DROITE
-        int div = 7 + this.addBlastRange;
+    private void InventoryRight(Graphics g){ ////////////// RIGHT PART
+        //TODO add blastRange for Mage class
+        int div = 4 + this.addBlastRange; // divides sreen in order to adapt dimensions
         Image image = getToolkit().getImage("src/Images/inventoryPlayer.jpg");
-        g.drawImage(image, invWidth, 3*invHeight, 1000-invWidth, invHeight, this);
-        String textLive = "Life: " + player.getLife() + "/" + player.getMaxLife();
-        g.drawString(textLive, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight/div);
-        String textStrengh = "Strength: " + player.getForce();
-        g.drawString(textStrengh, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight*2/div);
-        //Is the player a Mage
-        if(addBlastRange == 1){
+        g.drawImage(image, invWidth, mapHeight-invHeight, mapWidth-invWidth, invHeight, this);
+
+        String textLife = "Life: " + player.getLife() + "/" + player.getMaxLife();
+        g.drawString(textLife, invWidth + (mapWidth-invWidth)*1/20, mapHeight-invHeight+ invHeight/div);
+
+        String textStrengh = "Strengh: " + player.getStrength();
+        g.drawString(textStrengh, invWidth + (mapWidth-invWidth)*1/20, mapHeight-invHeight+ invHeight*2/div);
+
+        if(addBlastRange == 1){ // if Player is a Mage
             String textBlastRange = "BlastRange: " + ((Mage)player).getBlastRange();
-            g.drawString(textBlastRange, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight*3/div);
+            g.drawString(textBlastRange, invWidth + (mapWidth-invWidth)*1/20, mapHeight-invHeight+ invHeight*3/div);
         }
-        String textWeapon = "Weapon: " ;
-        g.drawString(textWeapon, invWidth + (1000-invWidth)*2/5, 3*invHeight+ invHeight*(3+addBlastRange)/div);
+
+        String textWeapon = "Weapon: ";
+        g.drawString(textWeapon, invWidth + (mapWidth-invWidth)*1/20, mapHeight-invHeight+ invHeight*(3+addBlastRange)/div);
         if(player.getWeaponEquip() == null){
             image = getToolkit().getImage("src/Images/icone.jpg");
-        }
-        else{
+        } else{
             image = getToolkit().getImage(player.getWeaponEquip().getAddImage());
         }
-        g.drawImage(image, invWidth + (1000-invWidth)*1/2, 3*invHeight+ invHeight*(7+addBlastRange)/15, side, side, this);
+        g.drawImage(image, invWidth + (mapWidth-invWidth)*3/4, mapHeight-invHeight+ invHeight*(2+addBlastRange)/div, side, side, this);
 
-        //////////////on dessine l'icone sﾃｩlectionnﾃｩe
-        int xic = posIc[0];
+        int xic = posIc[0]; // paints icon for selection
         int yic = posIc[1];
         image = getToolkit().getImage("src/Images/icone_select.png");
         if(posIc[0] == numInvX + 1){
-            g.drawImage(image, invWidth + (1000-invWidth)*1/2, 3*invHeight+ invHeight*(7+addBlastRange)/15, side, side, this);
+            g.drawImage(image, invWidth + (mapWidth-invWidth)*3/4, mapHeight-invHeight+ invHeight*(2+addBlastRange)/div, side, side, this);
+        } else{
+            g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, mapHeight-invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
         }
-        else{
-            g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, 3*invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
-        }
-
     }
 
     public void paintBlast(Graphics g){
@@ -224,36 +228,6 @@ public class Map extends JPanel {
 
     ////////////////////////////////////////////////////////////////////////////////////////<movingMethods>
 
-    //on déplace l'icone sélectionnée
-    public void moveIc(int direction){
-        switch(direction){
-            //Right
-            case 0:
-                if(posIc[0] < numInvX){
-                    posIc[0] += 1;
-                }
-                break;
-            //Up
-            case 1:
-                if(posIc[1] > 1){
-                    posIc[1] -= 1;
-                }
-                break;
-            //Left
-            case 2:
-                if(posIc[0] > 1){
-                    posIc[0] -= 1;
-                }
-                break;
-            //Down
-            case 3:
-                if(posIc[1] < numInvY){
-                    posIc[1] += 1;
-                }
-                break;
-        }
-    }
-
     public void swingAxe(){
 
     }
@@ -267,31 +241,39 @@ public class Map extends JPanel {
     public void setPlayer(Player player){
         this.player = player;
         this.inventory = player.getInventory();
-        this.posIc = player.getItemInHand();
+        this.posIc = player.getPosIc();
 
         if(player instanceof Mage){
             this.addBlastRange = 1;
         }
     }
 
-    public void setSize(int size){
+    public void setSize(int size){ // sets size of the map AND the inventory
         this.size = size;
+        this.mapHeight = (size)*this.yMulti;
+        this.mapWidth = (size)*this.xMulti;
+        this.invWidth = this.mapWidth*19/30;
+        this.invHeight = this.mapHeight/5;
+        this.side = Integer.min(invWidth/10, invHeight/4);
+        font = new Font("TimesRoman", Font.PLAIN, mapWidth/32 );
     }
 
-    //On défini l'affichage de l'inventaire
-    public void setInventoryState(boolean inventoryState){
+    public void setInventoryState(boolean inventoryState){ // says if inventory is opened and must be painted
         this.inventoryState = inventoryState;
     }
 
+    public void setInvX(int numInvX){
+        this.numInvX = numInvX;
+    }
+
+    public void setInvY(int numInvY){
+        this.numInvY = numInvY;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
 
     public boolean getInventoryState(){
         return inventoryState;
-    }
-
-    public int[] getPosIc(){
-        return this.posIc;
     }
 
 }

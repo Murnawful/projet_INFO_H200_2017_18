@@ -20,14 +20,14 @@ public class Sword extends Weapon {
             p.getWeaponEquip().unequip(p);
         }
         p.setWeaponEquip(this);
-        p.setForce(p.getForce() + bonus);
+        p.setStrength(p.getStrength() + bonus);
         return true;
     }
 
     @Override
     public void run(){
         Player p = game.getPlayer();
-        attack(p.getFrontX(), p.getFrontY(), p.getForce(), game);
+        attack(p.getFrontX(), p.getFrontY(), p.getStrength(), game);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Axe extends Weapon implements Directable {
                 p.getWeaponEquip().unequip(p);
             }
             p.setWeaponEquip(this);
-            p.setForce(p.getForce() + bonus);
+            p.setStrength(p.getStrength() + bonus);
         }else{
             res = false;
             System.out.println("Vous ne pouvez pas équiper cette arme !");
@@ -39,7 +39,7 @@ public class Axe extends Weapon implements Directable {
     public void run() {
         Player p = game.getPlayer();
         int face = p.getDirection();
-        int force = p.getForce();
+        int force = p.getStrength();
         try {
             if (face == EAST){
                 for (int i = 0; i <= 4; i++){ int X = p.getFrontX();  int Y = p.getFrontY();

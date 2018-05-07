@@ -31,7 +31,7 @@ public class Chest extends GameObject implements Dropper, Directable {
     }
 
     @Override
-    public void drop() {
+    public void drop(int emp) {
         Player p = game.getPlayer();
         for (int i = 0; i <= loot.size() - 1; i++){
             InventoryObject obj = loot.get(i);
@@ -58,7 +58,7 @@ public class Chest extends GameObject implements Dropper, Directable {
     public void open(){
         if (!opened){
             this.opened = true;
-            drop();
+            drop(0);
         }
     }
 
