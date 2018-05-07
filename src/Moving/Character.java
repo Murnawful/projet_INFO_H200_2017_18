@@ -1,18 +1,15 @@
 package Moving;
 
-import Model.Activable;
-import Model.Deletable;
-import Model.Directable;
-import Model.Game;
+import Model.*;
 import Objects.*;
 
 import java.util.ArrayList;
 
-public abstract class Character extends GameObject implements Directable, Deletable {
+public abstract class Character extends GameObject implements Directable, Deletable, Dropper {
 
     protected int life;
     private int direction;
-    protected int force;
+    protected int strength;
     protected ArrayList<InventoryObject> inventory;
     protected int sizeMaxInventory;
     private int maxLife;
@@ -24,7 +21,7 @@ public abstract class Character extends GameObject implements Directable, Deleta
         super(X, Y, color);
         this.life = life;
         this.maxLife = maxLife;
-        this.force = force;
+        this.strength = force;
         this.inventory = inventory;
         this.sizeMaxInventory = sizeMaxInventory;
         this.game = game;
@@ -49,19 +46,28 @@ public abstract class Character extends GameObject implements Directable, Deleta
         if (! obstacle) {
             move(x, y);
         }
-        //teste si on quitte la map
-        if (nextX == (game.getSize()) || nextY == (game.getSize()) ){
-            System.out.println("map quitte");
+        MapExit exitUse = null; // evaluates of map is exited by Character
+        ArrayList<MapExit> allExit = game.getAllExit();
+        for (MapExit mapExit : allExit){
+            if(mapExit.getX() == this.posX){
+                if(mapExit.getY() == this.posY){
+                    exitUse = mapExit;
+                    break;
+                }
+            }
+        }
+        if(exitUse!=null){
+            game.changeMap(exitUse);
         }
         game.notifyView();
     }
 
-    public void move(int X, int Y) {
+    private void move(int X, int Y) {
         this.posX = this.posX + X;
         this.posY = this.posY + Y;
     }
 
-    public void rotate(int x, int y) {
+    private void rotate(int x, int y) {
         if(x == 0 && y == -1)
             direction = NORTH;
         else if(x == 0 && y == 1)
@@ -79,13 +85,34 @@ public abstract class Character extends GameObject implements Directable, Deleta
         return true;
     }
 
+    @Override
+    public void drop(int empInt){ // pulls item out of the inventory and places it on Map
+        InventoryObject drop = inventory.get(empInt);
+        drop.setPosX(posX);
+        drop.setPosY(posY);
+        game.addGameObject(drop);
+        inventory.remove(empInt);
+        game.notifyView();
+    }
+
+    @Override
+    public void dropAll(){ // pulls every item out of the inventory and places it on Map
+        for(InventoryObject elem : inventory){
+            elem.setPosX(posX);
+            elem.setPosY(posY);
+            elem.attachDeletable(game);
+        }
+        game.addInventoryObjects(inventory);
+        inventory = new ArrayList<InventoryObject>();
+        game.notifyView();
+    }
+
     public void modifyLife(int change) {
         if(getLife() + change <= 0){
             if(this instanceof Monster){
                 notifyDeletableObserver();
             }else {
-                // Delete all
-                game.gameOver();
+                game.gameOver(); // Player is dead
             }
         }else if (getLife() + change <= getMaxLife()) {
             setLife(getLife() + change);
@@ -93,6 +120,10 @@ public abstract class Character extends GameObject implements Directable, Deleta
             setLife(getMaxLife());
             System.out.println("Points de vie au maximum !");
         }
+    }
+
+    public void modififyMaxLife(int change){
+        this.maxLife += change;
     }
 
     public void action() {
@@ -138,13 +169,16 @@ public abstract class Character extends GameObject implements Directable, Deleta
         }
         if (o instanceof Character){
             Character aimedObject = (Character) o;
-            aimedObject.modifyLife(-force);
+            aimedObject.modifyLife(-strength);
         }else if(o instanceof BlockBreakable){
             BlockBreakable aimedObject = (BlockBreakable) o;
-            aimedObject.activate(p.getForce());
+            aimedObject.activate(p.getStrength());
             game.notifyView();
         }
     }
+
+    @Override
+    public void open(){}
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
@@ -152,8 +186,20 @@ public abstract class Character extends GameObject implements Directable, Deleta
         this.life = life;
     }
 
+    public void setMaxLife(int maxLife){
+        this.maxLife = maxLife;
+    }
+
+    public void setSizeMaxInventory(int sizeMaxInventory) {
+        this.sizeMaxInventory = sizeMaxInventory;
+    }
+
     public void setInventory(InventoryObject object){
         inventory.add(object);
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
@@ -183,8 +229,8 @@ public abstract class Character extends GameObject implements Directable, Deleta
         return life;
     }
 
-    public int getForce(){
-        return force;
+    public int getStrength(){
+        return strength;
     }
 
     public int getSizeInventory(){

@@ -1,6 +1,8 @@
 package Objects;
 
-public abstract class InventoryObject extends GameObject{
+import Moving.Player;
+
+public abstract class InventoryObject extends GameObject implements Usable{
 
     private String description;
     private boolean isInInventory = false;
@@ -16,9 +18,24 @@ public abstract class InventoryObject extends GameObject{
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
+    public void drop(){}
+
     @Override
     public void activate(int points){ // action de ramasser l'objet
         notifyDeletableObserver();
+    }
+
+    @Override
+    public boolean use(Player p){ // output is true if object must be removed from inventory
+        boolean remove = false;
+        if(this instanceof Weapon){
+            remove = ((Weapon)this).equip(p);
+        }
+        else if(this instanceof Consumable){
+            remove = true;
+            ((Consumable)this).consume(p);
+        }
+        return remove;
     }
 
     public void setInInventory(){

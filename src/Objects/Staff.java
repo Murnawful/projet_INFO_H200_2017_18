@@ -28,7 +28,7 @@ public class Staff extends Weapon implements Directable{
         int face = p.getDirection();
         try{
             Mage m = (Mage) p;
-            int force = m.getForce();
+            int force = m.getStrength();
             for(int i = 0; i <= m.getBlastRange(); i++){
                 if (face == NORTH){
                     attack(X,Y-i,force, game);
@@ -63,7 +63,7 @@ public class Staff extends Weapon implements Directable{
             }
             p.setWeaponEquip(this);
             ((Mage) p).setBlastRange(((Mage) p).getBlastRange() + bonusRange);
-            p.setForce(p.getForce() + bonus);
+            p.setStrength(p.getStrength() + bonus);
         }else{
             res = false;
             System.out.println("Vous ne pouvez pas équiper cette arme !");
@@ -76,7 +76,7 @@ public class Staff extends Weapon implements Directable{
         p.setInventory(p.getWeaponEquip());
         p.getWeaponEquip().setInInventory();
         ((Mage) p).setBlastRange(((Mage) p).getBlastRange() - bonusRange);
-        p.setForce(p.getForce() - bonus);
+        p.setStrength(p.getStrength() - bonus);
         p.setWeaponEquip(null);
     }
 

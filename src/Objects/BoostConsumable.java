@@ -25,7 +25,6 @@ public class BoostConsumable extends InventoryObject implements Consumable, Dele
     public void run() {
         try{
             Player p = game.getPlayer();
-            consume(p);
             Thread.sleep(boostLength);
             vanish(p);
         }catch(Exception e){
@@ -34,33 +33,35 @@ public class BoostConsumable extends InventoryObject implements Consumable, Dele
     }
 
     @Override
-    public void consume(Player p) {
+    public void consume(Player p) { // lists the different effects of boosting potions
         if(boostType.equals("force")){
-            p.setForce(p.getForce() + 1);
+            p.setStrength(p.getStrength() + 1);
         }else if(boostType.equals("life")){
             p.modifyLife(1);
         }else if(boostType.equals("force+")){
-            p.setForce(p.getForce() + 2);
+            p.setStrength(p.getStrength() + 2);
         }else if(boostType.equals("life+")) {
             p.modifyLife(2);
         }else if(boostType.equals("force++")){
-            p.setForce(p.getForce() + 3);
+            p.setStrength(p.getStrength() + 3);
         }else if(boostType.equals("life++")) {
             p.modifyLife(3);
         }
+        Thread t = new Thread(this);
+        t.start();
     }
 
-    public void vanish(Player p){
+    public void vanish(Player p){ // removes effects of potions
         if(boostType.equals("force")){
-            p.setForce(p.getForce() - 1);
+            p.setStrength(p.getStrength() - 1);
         }else if(boostType.equals("life")){
             p.modifyLife(-1);
         }else if(boostType.equals("force+")){
-            p.setForce(p.getForce() - 2);
+            p.setStrength(p.getStrength() - 2);
         }else if(boostType.equals("life+")) {
             p.modifyLife(-2);
         }else if(boostType.equals("force++")){
-            p.setForce(p.getForce() - 3);
+            p.setStrength(p.getStrength() - 3);
         }else if(boostType.equals("life++")) {
             p.modifyLife(-3);
         }

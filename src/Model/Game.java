@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Keyboard;
 import Moving.*;
 import Objects.*;
 import View.Window;
@@ -9,27 +10,30 @@ import java.util.ArrayList;
 public class Game implements DeletableObserver{
 
     private ArrayList<GameObject> objects = new ArrayList<>();
+    private ArrayList<MapExit> allExit = new ArrayList<MapExit>();
     private Player player;
     private Window window;
     private int size;
     private int posIc[] = {0,0};
     private MapBuilder mapBuilder;
+    private int numInvY = 2;
+    private int numInvX = 5;
+    private Keyboard keyboard;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
     public Game(Window window) {
         this.window = window;
-
         mapBuilder = new MapBuilder(this, "src/MapFiles/map0.txt");
-        mapBuilder.build();
-        objects.add(player);
-
-        posIc[0] = player.getNumInvX()/2 + 1;
+        mapBuilder.build(); // creates all objects from the specified map file
+        objects.add(player); // MapBuilder has already set Player, it only needs to be added to the list
+        posIc[0] = player.getNumInvX()/2 + 1; // sets original inventory position
         posIc[1] = player.getNumInvY()/2 + 1;
-        player.setItemInHand(posIc);
-        window.setGameObjects(this.getGameObjects()); //lie la liste GameObjects de Map et celle de Game
+        player.setPosIc(posIc);
+        window.setInvX(numInvX);
+        window.setInvY(numInvY);
+        window.setGameObjects(this.getGameObjects()); //links the list of GameObjects of Game to the one in Map
         window.setPlayer(player);
-        window.setSize(size);
         notifyView();
     }
 
@@ -54,8 +58,7 @@ public class Game implements DeletableObserver{
         window.update();
     }
 
-    //on dﾃｩplace l'icone sﾃｩlectionnﾃｩe
-    public void moveIc(int direction){
+    public void moveIc(int direction){ // moves icon if Character moves
         switch(direction){
             //Right
             case 0:
@@ -89,31 +92,71 @@ public class Game implements DeletableObserver{
 
     @Override
     synchronized public void delete(Deletable ps) {
+        //TODO find a better method
         objects.remove(ps);
         ArrayList<InventoryObject> loot = null;
         if(ps instanceof Monster){
-            Monster m = (Monster) ps;
-            loot = m.getInventory();
-            for(InventoryObject elem : loot){
-                elem.setPosX(m.getPosX());
-                elem.setPosY(m.getPosY());
-                elem.attachDeletable(this);
-            }
-            this.objects.addAll(loot);
+            ((Monster) ps).dropAll();
+            ((Monster) ps).stopThread();
         }else if (ps instanceof Pot){
-            Pot p = (Pot) ps;
-            loot = p.getLoot();
-            for(InventoryObject elem : loot){
-                elem.setPosX(p.getPosX());
-                elem.setPosY(p.getPosY());
-                elem.attachDeletable(this);
-            }
-            this.objects.addAll(loot);
+            ((Pot) ps).dropAll();
         }
         notifyView();
     }
 
-    public void gameOver(){}
+    public void addInventoryObjects(ArrayList<InventoryObject> inventory){
+        this.objects.addAll(inventory);
+    }
+
+    public void addGameObject(GameObject object){
+        this.objects.add(object);
+    }
+
+    public void addMapExit(MapExit mapExit){
+        this.allExit.add(mapExit);
+    }
+
+    public void gameOver(){ // will create a new player and therefore notifies every class that needs it
+        System.out.println("Game over");
+        player = null;
+
+        initializeMap("src/MapFiles/map0.txt");
+
+        objects.add(player);
+
+        posIc[0] = player.getNumInvX()/2 + 1; // creates a new, empty inventory for the player
+        posIc[1] = player.getNumInvY()/2 + 1;
+        player.setPosIc(posIc);
+        window.setInvX(numInvX);
+        window.setInvY(numInvY);
+        keyboard.setPlayer(player);
+        window.setPlayer(player);
+        notifyView();
+    }
+
+    public void clean(){ // clears list of GameObject and stops every thread
+        for(GameObject object : objects){
+            if(object instanceof Monster){
+                ((Monster) object).stopThread();
+            }
+        }
+        objects.clear();
+    }
+
+    public void changeMap(MapExit mapExit) {
+        allExit.clear();
+        initializeMap(mapExit.getMapout());
+        player.setPosX(mapExit.getPlayerX());
+        player.setPosY(mapExit.getPlayerY());
+        notifyView();
+    }
+
+    private void initializeMap(String mapAdress) { // creates the indicated Map from MapFiles
+        mapBuilder.setMapFile(mapAdress);
+        this.clean();
+        mapBuilder.build(); // a new list of objects is created and notified to game
+        window.setGameObjects(this.getGameObjects()); // the list is sent to Window and Map
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
@@ -123,10 +166,15 @@ public class Game implements DeletableObserver{
 
     public void setSize(int size){
         this.size = size;
+        window.setSize(size);
     }
 
     public void setGameObjects(ArrayList<GameObject> objects){
         this.objects = objects;
+    }
+
+    public void setKeyboard(Keyboard keyboard){
+        this.keyboard = keyboard;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
@@ -141,5 +189,9 @@ public class Game implements DeletableObserver{
 
     public int getSize(){
         return size;
+    }
+
+    public ArrayList<MapExit> getAllExit(){
+        return this.allExit;
     }
 }

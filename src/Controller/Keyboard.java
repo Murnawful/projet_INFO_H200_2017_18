@@ -18,6 +18,7 @@ public class Keyboard implements KeyListener {
     public Keyboard(Game game) {
         this.game = game;
         this.p = game.getPlayer();
+        game.setKeyboard(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<KeyMethods>
@@ -26,7 +27,29 @@ public class Keyboard implements KeyListener {
     public void keyPressed(KeyEvent event) {
         int key = event.getKeyCode();
 
-        if(! inventoryOn){
+        if(inventoryOn){
+            switch (key) {
+                case KeyEvent.VK_RIGHT:
+                    game.moveIc(Directable.EAST);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    game.moveIc(Directable.WEST);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    game.moveIc(Directable.SOUTH);
+                    break;
+                case KeyEvent.VK_UP:
+                    game.moveIc(Directable.NORTH);
+                    break;
+                case KeyEvent.VK_E:
+                    p.useItem();
+                    break;
+                case KeyEvent.VK_D:
+                    p.drop(0);
+            }
+
+        }
+        else{
             switch (key) {
                 case KeyEvent.VK_RIGHT:
                     p.moveCharacter(1, 0);
@@ -45,25 +68,6 @@ public class Keyboard implements KeyListener {
                     break;
                 case KeyEvent.VK_E:
                     p.action();
-            }
-        }
-        else{
-            switch (key) {
-                case KeyEvent.VK_RIGHT:
-                    game.moveIc(Directable.EAST);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    game.moveIc(Directable.WEST);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    game.moveIc(Directable.SOUTH);
-                    break;
-                case KeyEvent.VK_UP:
-                    game.moveIc(Directable.NORTH);
-                    break;
-                case KeyEvent.VK_E:
-                    p.useItem();
-                    break;
             }
         }
     }
@@ -86,5 +90,9 @@ public class Keyboard implements KeyListener {
                 game.setInventoryState(inventoryOn);
                 break;
         }
+    }
+
+    public void setPlayer(Player p){
+        this.p = p;
     }
 }

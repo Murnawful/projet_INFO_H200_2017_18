@@ -21,13 +21,18 @@ public class Pot extends BlockBreakable implements Dropper {
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
     @Override
-    public void drop() {
+    public void drop(int emp) {
 
     }
 
     @Override
     public void dropAll() {
-
+        for(InventoryObject elem : loot){
+            elem.setPosX(posX);
+            elem.setPosY(posY);
+            elem.attachDeletable(game);
+        }
+        game.getGameObjects().addAll(loot);
     }
 
     @Override

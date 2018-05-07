@@ -20,12 +20,12 @@ public class BlockBreakable extends Block implements Deletable, Activable {
         if (lifepoints - points <=  0 && points != 0){
             crush();
             if(this instanceof Pot){
-                ((Pot) this).drop();
+                ((Pot) this).drop(0);
             }
         }
         else if(points != 0){
             lifepoints -= points;
-            this.color = lifepoints + 2; // pour éviter de retourner au gris
+            this.color = lifepoints + 2; // prevents block from turning grey
         }
     }
 

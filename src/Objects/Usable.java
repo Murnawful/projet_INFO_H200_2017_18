@@ -1,0 +1,10 @@
+package Objects;
+
+import Moving.Player;
+
+public interface Usable {
+
+    ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
+
+    boolean use(Player p);
+}

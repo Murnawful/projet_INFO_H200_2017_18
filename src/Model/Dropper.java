@@ -4,7 +4,7 @@ public interface Dropper {
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
-    void drop();
+    void drop(int item); // Character needs an input
 
     void dropAll();
 
