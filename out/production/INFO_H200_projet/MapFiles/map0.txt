@@ -21,12 +21,12 @@ GameObject(id,x,y)
 1 14 11 5
 1 15 11 5
 Loot
-101 -1 -1 4 potion life 2
+101 9 9 4 potion force++ 10000
 Loot
 102 10 9 3 potion 1
 402 25 25
 Loot
-101 -1 -1 4 potion life 2
+101 9 9 4 potion force++ 10000
 Loot
 102 10 9 3 potion 1
 401 26 25
@@ -42,7 +42,8 @@ Loot
 101 -1 -1 4 potion life 2
 Loot
 102 10 9 3 potion 1
-Monster 15 15 4 4 5 750 2 2 6 2
-Monster 20 25 4 4 5 750 2 2 6 2
+Monster 15 15 4 4 1 700 2 2 6 1
+Monster 20 25 4 4 1 700 2 2 6 1
 option
-exitEast
+1
+exitEast 1
