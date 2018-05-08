@@ -10,6 +10,7 @@ import Objects.InventoryObject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -36,8 +37,8 @@ public class Map extends JPanel {
     private int posIc[]= {numInvY/2 + 1,numInvX/2 + 1}; // if posIc = {numInvY, numInvX+1}, equipment icon is selected
 
     ///////////////////////////////////////////////////////////////////////////////////////<Dimsensions>
-    private final int width = 30;
-    private final int height = 30;
+    private final int width = 32;
+    private final int height = 32;
     private final int xMulti = 32;
     private final int yMulti = 32;
     private int invWidth = 0;
@@ -62,6 +63,7 @@ public class Map extends JPanel {
         if(objectsPaintLater != null){ // empties the list of objects in standby
             objectsPaintLater.clear();
         }
+        Image image = getToolkit().getImage("src/Images/Cobblestone.png");
         g.setFont(font);
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight() );
@@ -69,10 +71,11 @@ public class Map extends JPanel {
             for (int j = 0; j < size; j++) {
                 int x = i;
                 int y = j;
-                g.setColor(Color.LIGHT_GRAY);
-                g.fillRect(x * xMulti, y * yMulti, width, height); // paints the interior (starts from top right)
-                g.setColor(Color.BLACK);
-                g.drawRect(x * xMulti, y * yMulti, width, height); // paints contour (starts from top right)
+                //g.setColor(Color.LIGHT_GRAY);
+                //g.fillRect(x * xMulti, y * yMulti, width, height); // paints the interior (starts from top right)
+                g.drawImage(image, x* xMulti, y * yMulti, width,height,this);
+                //g.setColor(Color.BLACK);
+                //g.drawRect(x * xMulti, y * yMulti, width, height); // paints contour (starts from top right)
             }
         }
         for (GameObject object : objects) {
@@ -103,28 +106,36 @@ public class Map extends JPanel {
         int color = object.getColor();
 
         if (color == 0) { // paints the object accordingly
-            g.setColor(Color.DARK_GRAY);
+            //g.setColor(Color.DARK_GRAY);
+            Image image = getToolkit().getImage("src/Images/wall1.png");
+            g.drawImage(image, x* xMulti, y * yMulti, width,height,this);
         } else if (color == 1) {
             g.setColor(Color.GRAY);
         } else if (color == 2) {
             g.setColor(Color.BLUE);
         } else if (color == 3) {
-            g.setColor(Color.GREEN);
+            //g.setColor(Color.GREEN);
+            Image image = getToolkit().getImage("src/Images/healingPotion.png");
+            g.drawImage(image, x* xMulti, y * yMulti, width,height,this);
         } else if (color == 4) {
-            g.setColor(Color.RED);
+            //g.setColor(Color.RED);
+            Image image = getToolkit().getImage("src/Images/boostPotion.png");
+            g.drawImage(image, x* xMulti, y * yMulti, width,height,this);
         } else if (color == 5) {
             g.setColor(Color.ORANGE);
         }
 
-        g.fillRect(x * xMulti, y * yMulti, width, height);
-        g.setColor(Color.BLACK);
-        g.drawRect(x * xMulti, y * yMulti, width, height);
+        if (color != 0 && color != 4 && color != 3){
+            g.fillRect(x * xMulti, y * yMulti, width, height);
+            g.setColor(Color.BLACK);
+            g.drawRect(x * xMulti, y * yMulti, width, height);
+        }
         if(object instanceof Directable && !(object instanceof InventoryObject)) {
             paintLine(g, object,x,y); // if object is directable, paints a line to indicate front
         }
     }
 
-    public void paintLine(Graphics g, GameObject object, int x, int y){
+    private void paintLine(Graphics g, GameObject object, int x, int y){
         if(object instanceof Directable && !(object instanceof InventoryObject)) {
             int direction = ((Directable) object).getDirection();
 
@@ -215,7 +226,7 @@ public class Map extends JPanel {
 
     }
 
-    public void paintAxe(Graphics g){
+    private void paintAxe(Graphics g){
         Image image = getToolkit().getImage("src/Images/axe.png");
         g.drawImage(image, posIc[1], posIc[1], invWidth, invHeight, this);
     }

@@ -6,7 +6,7 @@ public interface Dropper {
 
     void drop(int item); // Character needs an input
 
-    void dropAll();
+    void dropAll(Game game);
 
     void open();
 }

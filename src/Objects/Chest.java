@@ -47,7 +47,7 @@ public class Chest extends GameObject implements Dropper, Directable {
     }
 
     @Override
-    public void dropAll(){}
+    public void dropAll(Game game){}
 
     @Override
     public boolean isObstacle() {

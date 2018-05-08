@@ -26,7 +26,7 @@ public class Game implements DeletableObserver{
         this.window = window;
         mapBuilder = new MapBuilder(this, "src/MapFiles/map0.txt");
         mapBuilder.build(); // creates all objects from the specified map file
-        objects.add(player); // MapBuilder has already set Player, it only needs to be added to the list
+        /*objects.add(player); // MapBuilder has already set Player, it only needs to be added to the list*/
         posIc[0] = player.getNumInvX()/2 + 1; // sets original inventory position
         posIc[1] = player.getNumInvY()/2 + 1;
         player.setPosIc(posIc);
@@ -96,10 +96,10 @@ public class Game implements DeletableObserver{
         objects.remove(ps);
         ArrayList<InventoryObject> loot = null;
         if(ps instanceof Monster){
-            ((Monster) ps).dropAll();
+            ((Monster) ps).dropAll(this);
             ((Monster) ps).stopThread();
         }else if (ps instanceof Pot){
-            ((Pot) ps).dropAll();
+            ((Pot) ps).dropAll(this);
         }
         notifyView();
     }

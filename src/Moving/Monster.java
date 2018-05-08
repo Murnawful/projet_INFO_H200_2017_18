@@ -105,6 +105,11 @@ public class Monster extends Character implements Runnable{
     }
 
     @Override
+    public void dropAll(Game game) {
+
+    }
+
+    @Override
     public void activate(int points) {
 
     }

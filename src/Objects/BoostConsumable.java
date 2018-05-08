@@ -8,15 +8,15 @@ public class BoostConsumable extends InventoryObject implements Consumable, Dele
 
     private String boostType;
     private int boostLength;
-    private Game game;
+    private Player player;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public BoostConsumable(int X, int Y, int color, String description, String boostType, int boostLength, Game game) {
+    public BoostConsumable(int X, int Y, int color, String description, String boostType, int boostLength, Player player) {
         super(X, Y, color, description, "src/Images/boostPotion.png");
         this.boostType = boostType;
         this.boostLength = boostLength;
-        this.game = game;
+        this.player = player;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods
@@ -24,9 +24,8 @@ public class BoostConsumable extends InventoryObject implements Consumable, Dele
     @Override
     public void run() {
         try{
-            Player p = game.getPlayer();
             Thread.sleep(boostLength);
-            vanish(p);
+            vanish(player);
         }catch(Exception e){
             e.printStackTrace();
         }

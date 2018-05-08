@@ -1,19 +1,22 @@
 package Objects;
 
-import Model.Game;
 import Moving.*;
+
+import java.util.ArrayList;
 
 public abstract class Weapon extends InventoryObject implements Runnable, Equipable{
 
     protected int bonus;
-    protected Game game;
+    protected ArrayList<GameObject> objects;
+    protected Player player;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Weapon(int x, int y, int color, String description, int bonus, Game game){
+    public Weapon(int x, int y, int color, String description, int bonus, ArrayList<GameObject> objects){
         super(x, y, color, description, description + ".png");
         this.bonus = bonus;
-        this.game = game;
+        this.objects = objects;
+        this.player = extractPlayer(objects);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -29,17 +32,32 @@ public abstract class Weapon extends InventoryObject implements Runnable, Equipa
         p.setWeaponEquip(null);
     }
 
-    public abstract void attack(int x, int y, int force, Game game);
+    public abstract void attack(int x, int y);
 
     @Override
     public boolean isObstacle() {
         return false;
     }
 
+    public Player extractPlayer(ArrayList<GameObject> objects){ // extract Player object from the list of GameObject
+        Player p = null;
+        for(int i = 0; i < objects.size(); i++){
+            if(objects.get(i) instanceof Player){
+                p = (Player)objects.get(i);
+                break;
+            }
+        }
+        return p;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setBonus(int bonus){
         this.bonus = bonus;
+    }
+
+    public void setPlayer(Player player){
+        this.player = player;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>

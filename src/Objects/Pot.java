@@ -8,14 +8,12 @@ import java.util.ArrayList;
 public class Pot extends BlockBreakable implements Dropper {
 
     private ArrayList<InventoryObject> loot;
-    private Game game;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Pot(int X, int Y, ArrayList<InventoryObject> loot, Game game){
+    public Pot(int X, int Y, ArrayList<InventoryObject> loot){
         super(X,Y,1);
         this.loot = loot;
-        this.game = game;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -26,7 +24,7 @@ public class Pot extends BlockBreakable implements Dropper {
     }
 
     @Override
-    public void dropAll() {
+    public void dropAll(Game game) {
         for(InventoryObject elem : loot){
             elem.setPosX(posX);
             elem.setPosY(posY);
