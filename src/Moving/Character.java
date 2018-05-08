@@ -49,11 +49,9 @@ public abstract class Character extends GameObject implements Directable, Deleta
         MapExit exitUse = null; // evaluates of map is exited by Character
         ArrayList<MapExit> allExit = game.getAllExit();
         for (MapExit mapExit : allExit){
-            if(mapExit.getX() == this.posX){
-                if(mapExit.getY() == this.posY){
-                    exitUse = mapExit;
-                    break;
-                }
+            if(mapExit.getX() == this.posX && mapExit.getY() == this.posY){
+                exitUse = mapExit;
+                break;
             }
         }
         if(exitUse!=null){
@@ -96,7 +94,7 @@ public abstract class Character extends GameObject implements Directable, Deleta
     }
 
     @Override
-    public void dropAll(){ // pulls every item out of the inventory and places it on Map
+    public void dropAll(Game game){ // pulls every item out of the inventory and places it on Map
         for(InventoryObject elem : inventory){
             elem.setPosX(posX);
             elem.setPosY(posY);

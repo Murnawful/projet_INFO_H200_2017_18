@@ -1,11 +1,16 @@
 size
-20
+25
 GameObject(id,x,y)
-6
+11
 1 2 1 4
 1 1 2 4
 1 9 9 4
-1 12 15 4
+1 2 1 14
+1 1 2 14
+1 9 9 14
+1 12 15 14
+1 2 1 14
+1 1 2 14
 101 9 9 4 potion life 2
 102 10 9 3 potion 1
 Character(type,x,y,ml,force,smi,c,s, vr, cn)
@@ -18,5 +23,5 @@ Monster 15 15 4 4 5 750 2 2 6 1
 Monster 2 2 4 4 5 750 2 2 6 1
 option
 2
-exitWest 0
-exitNorth 2
+exitEast 0
+exitSouth 1

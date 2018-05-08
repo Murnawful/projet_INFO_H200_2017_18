@@ -5,6 +5,8 @@ import Model.Game;
 import Moving.*;
 import Moving.Character;
 
+import java.util.ArrayList;
+
 public class Staff extends Weapon implements Directable{
 
     private int bonusRange;
@@ -12,8 +14,8 @@ public class Staff extends Weapon implements Directable{
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Staff(int x, int y, int color, String description, int bonus, int bonusRange, int speed, Game game) {
-        super(x, y, color, description, bonus, game);
+    public Staff(int x, int y, int color, String description, int bonus, int bonusRange, int speed, ArrayList<GameObject> objects) {
+        super(x, y, color, description, bonus, objects);
         this.bonusRange = bonusRange;
         this.speed = speed;
     }
@@ -22,25 +24,24 @@ public class Staff extends Weapon implements Directable{
 
     @Override
     public void run() {
-        Player p = game.getPlayer();
-        int X = p.getFrontX();
-        int Y = p.getFrontY();
-        int face = p.getDirection();
+        int X = player.getFrontX();
+        int Y = player.getFrontY();
+        int face = player.getDirection();
         try{
-            Mage m = (Mage) p;
+            Mage m = (Mage) player;
             int force = m.getStrength();
             for(int i = 0; i <= m.getBlastRange(); i++){
                 if (face == NORTH){
-                    attack(X,Y-i,force, game);
+                    attack(X,Y-i);
                     Thread.sleep(speed);
                 }else if(face == EAST){
-                    attack(X+i,Y,force, game);
+                    attack(X+i,Y);
                     Thread.sleep(speed);
                 }else if (face == SOUTH){
-                    attack(X,Y+i,force, game);
+                    attack(X,Y+i);
                     Thread.sleep(speed);
                 }else if (face == WEST){
-                    attack(X-i,Y,force, game);
+                    attack(X-i,Y);
                     Thread.sleep(speed);
                 }
                 if(force - 1 > 0){
@@ -81,9 +82,9 @@ public class Staff extends Weapon implements Directable{
     }
 
     @Override
-    public void attack(int x, int y, int force, Game game) {
+    public void attack(int x, int y) {
         GameObject o = null;
-        for(GameObject object : game.getGameObjects()){
+        for(GameObject object : objects){
             if(object.isAtPosition(x,y)){
                 o =  object;
                 break;
@@ -91,11 +92,10 @@ public class Staff extends Weapon implements Directable{
         }
         if (o instanceof Character){
             Character aimedObject = (Character) o;
-            aimedObject.modifyLife(-force);
+            aimedObject.modifyLife(-player.getStrength());
         }else if(o instanceof BlockBreakable){
             BlockBreakable aimedObject = (BlockBreakable) o;
-            aimedObject.activate(force);
-            game.notifyView();
+            aimedObject.activate(player.getStrength());
         }
     }
 

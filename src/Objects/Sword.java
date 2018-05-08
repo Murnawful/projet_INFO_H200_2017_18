@@ -1,15 +1,16 @@
 package Objects;
 
-import Model.Game;
 import Moving.Character;
 import Moving.Player;
+
+import java.util.ArrayList;
 
 public class Sword extends Weapon {
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Sword(int x, int y, int color, String description, int bonus, Game game){
-        super(x,y,color,description, bonus, game);
+    public Sword(int x, int y, int color, String description, int bonus, ArrayList<GameObject> objects){
+        super(x,y,color,description, bonus, objects);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -26,27 +27,24 @@ public class Sword extends Weapon {
 
     @Override
     public void run(){
-        Player p = game.getPlayer();
-        attack(p.getFrontX(), p.getFrontY(), p.getStrength(), game);
+        attack(player.getFrontX(), player.getFrontY());
     }
 
     @Override
-    public void attack(int x, int y,int force, Game game){
+    public void attack(int x, int y){
         GameObject o = null;
-        Player p = game.getPlayer();
-        for(GameObject object : game.getGameObjects()){
-            if(object.isAtPosition(p.getFrontX(),p.getFrontY())){
+        for(GameObject object : objects){
+            if(object.isAtPosition(player.getFrontX(),player.getFrontY())){
                 o =  object;
                 break;
             }
         }
         if (o instanceof Character){
             Character aimedObject = (Character) o;
-            aimedObject.modifyLife(-force);
+            aimedObject.modifyLife(-player.getStrength());
         }else if(o instanceof BlockBreakable){
             BlockBreakable aimedObject = (BlockBreakable) o;
-            aimedObject.activate(force);
-            game.notifyView();
+            aimedObject.activate(player.getStrength());
         }
     }
 }

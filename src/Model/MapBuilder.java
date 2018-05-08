@@ -17,6 +17,7 @@ public class MapBuilder {
     private String mapFile;
     private Game game;
     private int size;
+    private Player player = null;
     private ArrayList<GameObject> objects = new ArrayList<>();
     private ArrayList<InventoryObject> loot;
     private MapExit mapExit;
@@ -38,7 +39,9 @@ public class MapBuilder {
             BufferedReader in = new BufferedReader(new FileReader(mapFile));
 
             text = in.readLine();
-
+            if(game.getPlayer() != null){ //Sets back the player to initial position if clean() method has cleared it from Game
+                objects.add(game.getPlayer());
+            }
             while(text != null){
                 text = text.trim();
 
@@ -59,9 +62,6 @@ public class MapBuilder {
             System.out.println(e);
         } catch( IOException e){
             System.out.println(e);
-        }
-        if(game.getPlayer() != null){ //Sets back the player to initial position if clean() method has cleared it from Game
-            objects.add(game.getPlayer());
         }
         game.setGameObjects(objects); // returns the list of objects to Game
         objects = new ArrayList<>(); // empties the list
@@ -87,12 +87,16 @@ public class MapBuilder {
                     int sizeMaxInventory = Integer.valueOf(text[6]);
                     int color = Integer.valueOf(text[7]);
                     Player player = new Warrior(x, y, life, maxLife, force, new ArrayList<InventoryObject>(), sizeMaxInventory, color, game);
+                    this.player = player; // stores the player as it needs to be added to the list of object to ensure compatibility with weapons
+                    objects.add(player); // adds the player to the list to ensure compatibility
                     game.setPlayer(player); // goes directly to Game to ensure distinction
                 } else if("Mage".compareTo(Type) == 0 && game.getPlayer() == null){
                     int blastRange = Integer.valueOf(text[6]);
                     int sizeMaxInventory = Integer.valueOf(text[7]);
                     int color = Integer.valueOf(text[8]);
                     Player player = new Mage(x, y, life, maxLife, force, blastRange, new ArrayList<InventoryObject>(), sizeMaxInventory, color, game);
+                    this.player = player; // stores the player as it needs to be added to the list of object to ensure compatibility with weapons
+                    objects.add(player); // adds the player to the list to ensure compatibility
                     game.setPlayer(player); // goes directly to Game to ensure distinction
                 } else if ("Monster".compareTo(Type) == 0){ // Creating monsters /!\ use Monster type as it is Runnable !!
                     int speed = Integer.valueOf(text[6]);
@@ -152,7 +156,8 @@ public class MapBuilder {
             switch(id) {
                 case 001:
                     int lifePoint = Integer.valueOf(text[3]);
-                    BlockBreakable block = new BlockBreakable(x, y, lifePoint);
+                    Block block = new BlockBreakable(x, y, lifePoint);
+                    block.attachDeletable(game);
                     creation = block;
                     break;
             }
@@ -165,7 +170,7 @@ public class MapBuilder {
                 case 101:
                     String boostType = text[5];
                     int boostLength = Integer.valueOf(text[6]);
-                    InventoryObject boostPotion = new BoostConsumable(x, y, color, description, boostType, boostLength, game);
+                    InventoryObject boostPotion = new BoostConsumable(x, y, color, description, boostType, boostLength,player);
                     creation = boostPotion;
                     break;
                 case 102:
@@ -183,17 +188,17 @@ public class MapBuilder {
             switch(id){
                 case 301:
                     int weight = Integer.valueOf(text[6]);
-                    InventoryObject axe = new Axe( x, y, color, description, bonus, weight, game);
+                    InventoryObject axe = new Axe( x, y, color, description, bonus, weight,objects);
                     creation = axe;
                     break;
                 case 302:
                     int bonusRange = Integer.valueOf(text[6]);
                     int speed = Integer.valueOf(text[7]);
-                    InventoryObject staff = new Staff( x, y, color, description, bonus, bonusRange, speed,game);
+                    InventoryObject staff = new Staff( x, y, color, description, bonus, bonusRange, speed,objects);
                     creation = staff;
                     break;
                 case 303:
-                    InventoryObject sword = new Sword( x, y, color, description, bonus, game);
+                    InventoryObject sword = new Sword( x, y, color, description, bonus, objects);
                     creation = sword;
                     break;
             }
@@ -202,7 +207,8 @@ public class MapBuilder {
         else{
             switch(id) {
                 case 401:
-                    Block pot = new Pot(x, y, loot, game);
+                    Block pot = new Pot(x, y, loot);
+                    pot.attachDeletable(game);
                     creation = pot;
                     break;
                 case 402:
@@ -274,6 +280,10 @@ public class MapBuilder {
     public void setMapFile(String mapFile){
    this.mapFile = mapFile;
  }
+
+    public void setPlayer(Player player){
+        this.player = player;
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
 
