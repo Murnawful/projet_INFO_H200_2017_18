@@ -4,11 +4,10 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
-import Moving.Player;
-import Objects.GameObject;
-
+import Model.Moving.Player;
+import Model.Object.GameObject;
 
 public class Window {
 
@@ -34,11 +33,11 @@ public class Window {
     public void update() {
         this.map.redraw();
     }
-    
+
     public void swingAxe(){
-      map.swingAxe();
-      this.map.redraw();
-  }
+        map.swingAxe();
+        this.map.redraw();
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
@@ -46,9 +45,9 @@ public class Window {
         map.setInventoryState(inventoryState);
         this.map.redraw();
     }
-    
+
     public void setSize(int size){
-      this.map.setSize(size);
+        this.map.setSize(size);
     }
 
     public void setKeyListener(KeyListener keyboard) {
@@ -62,15 +61,14 @@ public class Window {
     public void setPlayer(Player player) {
         this.map.setPlayer(player);
     }
-    
+
     public void setInvX(int numInvX){
-      map.setInvX(numInvX);
+        map.setInvX(numInvX);
     }
-    
+
     public void setInvY(int numInvY){
-      map.setInvY(numInvY);
+        map.setInvY(numInvY);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
-    
 }

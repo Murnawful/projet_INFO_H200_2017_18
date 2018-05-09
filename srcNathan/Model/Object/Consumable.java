@@ -1,9 +1,10 @@
-package Model;
+package Model.Object;
 
+import Model.Moving.Player;
 
-public interface DeletableObserver {
+public interface Consumable {
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
-    void delete(Deletable d);
+    void consume(Player p);
 }
