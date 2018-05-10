@@ -14,8 +14,8 @@ public class Staff extends Weapon implements Directable{
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Staff(int x, int y, int color, String description, int bonus, int bonusRange, int speed, ArrayList<GameObject> objects) {
-        super(x, y, color, description, bonus, objects);
+    public Staff(int x, int y, int color, String description, int bonus, int bonusRange, int speed, Game game) {
+        super(x, y, color, description, bonus, game);
         this.bonusRange = bonusRange;
         this.speed = speed;
     }
@@ -24,6 +24,7 @@ public class Staff extends Weapon implements Directable{
 
     @Override
     public void run() {
+        Player player = game.getPlayer();
         int X = player.getFrontX();
         int Y = player.getFrontY();
         int face = player.getDirection();
@@ -75,7 +76,6 @@ public class Staff extends Weapon implements Directable{
     @Override
     public void unequip(Player p){
         p.setInventory(p.getWeaponEquip());
-        p.getWeaponEquip().setInInventory();
         ((Mage) p).setBlastRange(((Mage) p).getBlastRange() - bonusRange);
         p.setStrength(p.getStrength() - bonus);
         p.setWeaponEquip(null);
@@ -84,7 +84,7 @@ public class Staff extends Weapon implements Directable{
     @Override
     public void attack(int x, int y) {
         GameObject o = null;
-        for(GameObject object : objects){
+        for(GameObject object : game.getGameObjects()){
             if(object.isAtPosition(x,y)){
                 o =  object;
                 break;
@@ -92,10 +92,10 @@ public class Staff extends Weapon implements Directable{
         }
         if (o instanceof Character){
             Character aimedObject = (Character) o;
-            aimedObject.modifyLife(-player.getStrength());
+            aimedObject.modifyLife(-game.getPlayer().getStrength());
         }else if(o instanceof BlockBreakable){
             BlockBreakable aimedObject = (BlockBreakable) o;
-            aimedObject.activate(player.getStrength());
+            aimedObject.activate(game.getPlayer().getStrength());
         }
     }
 

@@ -170,7 +170,7 @@ public class MapBuilder {
                 case 101:
                     String boostType = text[5];
                     int boostLength = Integer.valueOf(text[6]);
-                    InventoryObject boostPotion = new BoostConsumable(x, y, color, description, boostType, boostLength,player);
+                    InventoryObject boostPotion = new BoostConsumable(x, y, color, description, boostType, boostLength,game);
                     creation = boostPotion;
                     break;
                 case 102:
@@ -188,17 +188,17 @@ public class MapBuilder {
             switch(id){
                 case 301:
                     int weight = Integer.valueOf(text[6]);
-                    InventoryObject axe = new Axe( x, y, color, description, bonus, weight,objects);
+                    InventoryObject axe = new Axe( x, y, color, description, bonus, weight,game);
                     creation = axe;
                     break;
                 case 302:
                     int bonusRange = Integer.valueOf(text[6]);
                     int speed = Integer.valueOf(text[7]);
-                    InventoryObject staff = new Staff( x, y, color, description, bonus, bonusRange, speed,objects);
+                    InventoryObject staff = new Staff( x, y, color, description, bonus, bonusRange, speed,game);
                     creation = staff;
                     break;
                 case 303:
-                    InventoryObject sword = new Sword( x, y, color, description, bonus, objects);
+                    InventoryObject sword = new Sword( x, y, color, description, bonus, game);
                     creation = sword;
                     break;
             }
@@ -207,7 +207,7 @@ public class MapBuilder {
         else{
             switch(id) {
                 case 401:
-                    Block pot = new Pot(x, y, loot);
+                    Block pot = new Pot(x, y, loot, game);
                     pot.attachDeletable(game);
                     creation = pot;
                     break;

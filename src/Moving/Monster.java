@@ -104,16 +104,6 @@ public class Monster extends Character implements Runnable{
         threadActivate = false;
     }
 
-    @Override
-    public void dropAll(Game game) {
-
-    }
-
-    @Override
-    public void activate(int points) {
-
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setSpeed(int speed){

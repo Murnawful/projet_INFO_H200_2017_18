@@ -33,21 +33,28 @@ public class Chest extends GameObject implements Dropper, Directable {
     @Override
     public void drop(int emp) {
         Player p = game.getPlayer();
-        for (int i = 0; i <= loot.size() - 1; i++){
-            InventoryObject obj = loot.get(i);
+        int lootSize = loot.size();
+        for (int i = 0; i < lootSize; i++){
+            InventoryObject obj = loot.get(0);
             if (p.getSizeInventory() + 1 <= p.getSizeMaxInventory()){
-                p.setInventory(loot.get(i));
-                obj.isInInventory();
+                p.addInventory(loot.get(0));
             }else{
-                obj.setPosX(p.getPosX());
-                obj.setPosY(p.getPosY());
-                game.getGameObjects().add(obj);
+                dropAll();
+                break;
             }
+            loot.remove(0);
         }
     }
 
     @Override
-    public void dropAll(Game game){}
+    public void dropAll(){
+        for(InventoryObject elem : loot){
+            elem.setPosX(posX + (-1)*(direction-1));
+            elem.setPosY(posY + (direction-2));
+            elem.attachDeletable(game);
+        }
+        game.getGameObjects().addAll(loot);
+    }
 
     @Override
     public boolean isObstacle() {

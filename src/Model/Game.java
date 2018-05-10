@@ -96,10 +96,10 @@ public class Game implements DeletableObserver{
         objects.remove(ps);
         ArrayList<InventoryObject> loot = null;
         if(ps instanceof Monster){
-            ((Monster) ps).dropAll(this);
+            ((Monster) ps).dropAll();
             ((Monster) ps).stopThread();
         }else if (ps instanceof Pot){
-            ((Pot) ps).dropAll(this);
+            ((Pot) ps).dropAll();
         }
         notifyView();
     }

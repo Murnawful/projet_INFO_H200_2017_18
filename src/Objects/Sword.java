@@ -1,5 +1,6 @@
 package Objects;
 
+import Model.Game;
 import Moving.Character;
 import Moving.Player;
 
@@ -9,8 +10,8 @@ public class Sword extends Weapon {
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Sword(int x, int y, int color, String description, int bonus, ArrayList<GameObject> objects){
-        super(x,y,color,description, bonus, objects);
+    public Sword(int x, int y, int color, String description, int bonus, Game game){
+        super(x,y,color,description, bonus, game);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -27,24 +28,25 @@ public class Sword extends Weapon {
 
     @Override
     public void run(){
+        Player player = game.getPlayer();
         attack(player.getFrontX(), player.getFrontY());
     }
 
     @Override
     public void attack(int x, int y){
         GameObject o = null;
-        for(GameObject object : objects){
-            if(object.isAtPosition(player.getFrontX(),player.getFrontY())){
+        for(GameObject object : game.getGameObjects()){
+            if(object.isAtPosition(game.getPlayer().getFrontX(),game.getPlayer().getFrontY())){
                 o =  object;
                 break;
             }
         }
         if (o instanceof Character){
             Character aimedObject = (Character) o;
-            aimedObject.modifyLife(-player.getStrength());
+            aimedObject.modifyLife(-game.getPlayer().getStrength());
         }else if(o instanceof BlockBreakable){
             BlockBreakable aimedObject = (BlockBreakable) o;
-            aimedObject.activate(player.getStrength());
+            aimedObject.activate(game.getPlayer().getStrength());
         }
     }
 }
