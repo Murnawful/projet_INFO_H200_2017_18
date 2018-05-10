@@ -22,9 +22,6 @@ public abstract class Player extends Character {
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
     @Override
-    public void activate(int points) {}
-
-    @Override
     public void drop(int emp){ // if no input to drop(), the selected item is dropped
         int CoordOjectInHand = this.getItemInHand();
         InventoryObject objInHand = this.getObjectInHand( CoordOjectInHand);
@@ -49,7 +46,6 @@ public abstract class Player extends Character {
                 }
             }
         }
-
         game.notifyView();
     }
 

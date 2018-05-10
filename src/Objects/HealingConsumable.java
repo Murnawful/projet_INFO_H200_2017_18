@@ -21,7 +21,6 @@ public class HealingConsumable extends InventoryObject implements Consumable, De
         p.modifyLife(healingPower);
     }
 
-
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setHealingPower(int healingPower){

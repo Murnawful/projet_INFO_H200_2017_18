@@ -5,7 +5,7 @@ import Objects.*;
 
 import java.util.ArrayList;
 
-public abstract class Character extends GameObject implements Directable, Deletable, Dropper {
+public abstract class Character extends GameObject implements Directable, Dropper {
 
     protected int life;
     private int direction;
@@ -94,7 +94,7 @@ public abstract class Character extends GameObject implements Directable, Deleta
     }
 
     @Override
-    public void dropAll(Game game){ // pulls every item out of the inventory and places it on Map
+    public void dropAll(){ // pulls every item out of the inventory and places it on Map
         for(InventoryObject elem : inventory){
             elem.setPosX(posX);
             elem.setPosY(posY);
@@ -148,7 +148,6 @@ public abstract class Character extends GameObject implements Directable, Deleta
     private void pickUp(Activable aimedObject){
         if(inventory.size() < sizeMaxInventory){
             setInventory((InventoryObject) aimedObject);
-            ((InventoryObject) aimedObject).setInInventory();
             aimedObject.activate(0);
             game.notifyView();
         }else{
@@ -177,6 +176,10 @@ public abstract class Character extends GameObject implements Directable, Deleta
 
     @Override
     public void open(){}
+
+    public void addInventory(InventoryObject object){
+        inventory.add(object);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 

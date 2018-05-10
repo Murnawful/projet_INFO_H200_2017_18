@@ -1,5 +1,6 @@
 package Objects;
 
+import Model.Game;
 import Moving.*;
 
 import java.util.ArrayList;
@@ -7,16 +8,14 @@ import java.util.ArrayList;
 public abstract class Weapon extends InventoryObject implements Runnable, Equipable{
 
     protected int bonus;
-    protected ArrayList<GameObject> objects;
-    protected Player player;
+    protected Game game;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
-    public Weapon(int x, int y, int color, String description, int bonus, ArrayList<GameObject> objects){
+    public Weapon(int x, int y, int color, String description, int bonus, Game game){
         super(x, y, color, description, description + ".png");
         this.bonus = bonus;
-        this.objects = objects;
-        this.player = extractPlayer(objects);
+        this.game = game;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -26,8 +25,7 @@ public abstract class Weapon extends InventoryObject implements Runnable, Equipa
 
     @Override
     public void unequip(Player p){
-        p.setInventory(p.getWeaponEquip());
-        p.getWeaponEquip().setInInventory();
+        p.addInventory(p.getWeaponEquip());
         p.setStrength(p.getStrength() - bonus);
         p.setWeaponEquip(null);
     }
@@ -39,25 +37,10 @@ public abstract class Weapon extends InventoryObject implements Runnable, Equipa
         return false;
     }
 
-    public Player extractPlayer(ArrayList<GameObject> objects){ // extract Player object from the list of GameObject
-        Player p = null;
-        for(int i = 0; i < objects.size(); i++){
-            if(objects.get(i) instanceof Player){
-                p = (Player)objects.get(i);
-                break;
-            }
-        }
-        return p;
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setBonus(int bonus){
         this.bonus = bonus;
-    }
-
-    public void setPlayer(Player player){
-        this.player = player;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>

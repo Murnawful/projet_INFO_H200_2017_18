@@ -5,7 +5,6 @@ import Moving.Player;
 public abstract class InventoryObject extends GameObject implements Usable{
 
     private String description;
-    private boolean isInInventory = false;
     private String addImage;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
@@ -38,14 +37,6 @@ public abstract class InventoryObject extends GameObject implements Usable{
         return remove;
     }
 
-    public void setInInventory(){
-        if(isInInventory){
-            this.isInInventory = false;
-        }else {
-            this.isInInventory = true;
-        }
-    }
-
     @Override
     public boolean isObstacle() {
         return false;
@@ -55,10 +46,6 @@ public abstract class InventoryObject extends GameObject implements Usable{
 
     public String getDescription(){
         return description;
-    }
-
-    public boolean isInInventory(){
-        return isInInventory;
     }
 
     public String getAddImage(){
