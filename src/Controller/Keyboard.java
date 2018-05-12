@@ -18,7 +18,6 @@ public class Keyboard implements KeyListener {
     public Keyboard(Game game) {
         this.game = game;
         this.p = game.getPlayer();
-        game.setKeyboard(this);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<KeyMethods>

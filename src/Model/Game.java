@@ -18,7 +18,6 @@ public class Game implements DeletableObserver{
     private MapBuilder mapBuilder;
     private int numInvY = 2;
     private int numInvX = 5;
-    private Keyboard keyboard;
     private boolean inventoryOn = false;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
@@ -132,7 +131,6 @@ public class Game implements DeletableObserver{
         player.setPosIc(posIc);
         window.setInvX(numInvX);
         window.setInvY(numInvY);
-        keyboard.setPlayer(player);
         window.setPlayer(player);
         notifyView();
     }
@@ -174,10 +172,6 @@ public class Game implements DeletableObserver{
 
     public void setGameObjects(ArrayList<GameObject> objects){
         this.objects = objects;
-    }
-
-    public void setKeyboard(Keyboard keyboard){
-        this.keyboard = keyboard;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
