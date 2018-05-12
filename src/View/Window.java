@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import Controller.Keyboard;
-import Moving.Player;
-import Objects.GameObject;
+import Model.Moving.Player;
+import Model.Objects.GameObject;
 
 public class Window {
 

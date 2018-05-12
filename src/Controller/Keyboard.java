@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import Model.Game;
+import Model.Moving.Player;
 import Model.Directable;
-import Moving.Player;
 
 public class Keyboard implements KeyListener {
 

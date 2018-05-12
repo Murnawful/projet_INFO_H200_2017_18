@@ -1,8 +1,8 @@
 package Model;
 
 import Controller.Keyboard;
-import Moving.*;
-import Objects.*;
+import Model.Moving.*;
+import Model.Objects.*;
 import View.Window;
 
 import java.util.ArrayList;

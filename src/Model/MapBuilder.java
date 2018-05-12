@@ -6,11 +6,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Moving.Mage;
-import Moving.Monster;
-import Moving.Player;
-import Moving.Warrior;
-import Objects.*;
+import Model.Moving.Mage;
+import Model.Moving.Monster;
+import Model.Moving.Player;
+import Model.Moving.Warrior;
+import Model.Objects.*;
 
 public class MapBuilder {
 

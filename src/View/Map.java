@@ -1,11 +1,11 @@
 package View;
 
 import Model.Directable;
-import Moving.Character;
-import Moving.Mage;
-import Moving.Player;
-import Objects.GameObject;
-import Objects.InventoryObject;
+import Model.Moving.Character;
+import Model.Moving.Mage;
+import Model.Moving.Player;
+import Model.Objects.GameObject;
+import Model.Objects.InventoryObject;
 
 import java.awt.*;
 import java.util.ArrayList;
