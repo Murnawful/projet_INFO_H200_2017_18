@@ -8,9 +8,7 @@ import Objects.GameObject;
 import Objects.InventoryObject;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.*;
 
@@ -18,9 +16,9 @@ public class Map extends JPanel {
 
     ///////////////////////////////////////////////////////////////////////////////////////<Content>
     private static final long serialVersionUID = 1L;
-    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+    private ArrayList<GameObject> objects = new ArrayList<>();
     private ArrayList<GameObject> objectsPaintLater; // list of the last objects to be painted on map
-    private ArrayList<InventoryObject> inventory = new ArrayList<InventoryObject>();
+    private ArrayList<InventoryObject> inventory = new ArrayList<>();
     private Player player;
     private boolean inventoryState;
 
@@ -53,7 +51,7 @@ public class Map extends JPanel {
         this.requestFocusInWindow();
         posIc[0] = numInvX/2 + 1;
         posIc[1] = numInvY/2 + 1;
-        this.objectsPaintLater = new ArrayList<GameObject>();
+        this.objectsPaintLater = new ArrayList<>();
         // loads all images to be drawn on map
     }
 
@@ -100,7 +98,7 @@ public class Map extends JPanel {
     private void paintObject(Graphics g, GameObject object) {
         int x = object.getPosX();
         int y = object.getPosY();
-        if(object instanceof InventoryObject){
+        if (object instanceof InventoryObject){
 
         }
         int color = object.getColor();

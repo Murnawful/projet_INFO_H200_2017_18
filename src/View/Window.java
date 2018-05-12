@@ -34,11 +34,6 @@ public class Window {
         this.map.redraw();
     }
 
-    public void swingAxe(){
-        map.swingAxe();
-        this.map.redraw();
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setInventoryState(boolean inventoryState){

@@ -81,12 +81,7 @@ public class Keyboard implements KeyListener {
         int key = event.getKeyCode();
         switch (key) {
             case KeyEvent.VK_I:
-                if (inventoryOn){
-                    inventoryOn = false;
-                }
-                else{
-                    inventoryOn = true;
-                }
+                inventoryOn = !inventoryOn;
                 game.setInventoryState(inventoryOn);
                 break;
         }

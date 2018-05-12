@@ -73,7 +73,7 @@ public class MapBuilder {
         String[] text;
 
         int numChara = Integer.valueOf(in.readLine());
-        loot = new ArrayList<InventoryObject>();
+        loot = new ArrayList<>();
         for(int i=0; i<numChara; i++){
             text = in.readLine().split(" ");
             String Type = text[0];
@@ -287,7 +287,7 @@ public class MapBuilder {
 
     ////////////////////////////////////////////////////////////////////////////////////////<getMethods>
 
-    public int getSizeMap(String mapFile) { // scans a map file to find the size
+    private int getSizeMap(String mapFile) { // scans a map file to find the size
         String text = "";
         int mapSize = 0;
 

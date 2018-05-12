@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Game implements DeletableObserver{
 
     private ArrayList<GameObject> objects = new ArrayList<>();
-    private ArrayList<MapExit> allExit = new ArrayList<MapExit>();
+    private ArrayList<MapExit> allExit = new ArrayList<>();
     private Player player;
     private Window window;
     private int size;
@@ -35,17 +35,6 @@ public class Game implements DeletableObserver{
         window.setGameObjects(this.getGameObjects()); //links the list of GameObjects of Game to the one in Map
         window.setPlayer(player);
         notifyView();
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////<characterMethods>
-
-    public void playerPos(int playerNumber) {
-        Player player = ((Player) objects.get(playerNumber));
-        System.out.println(player.getPosX() + ":" + player.getPosY());
-    }
-
-    public void swingAxe(){
-        window.swingAxe();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<windowMethods>
@@ -85,7 +74,7 @@ public class Game implements DeletableObserver{
                 }
                 break;
         }
-        window.update();
+        notifyView();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
@@ -94,7 +83,6 @@ public class Game implements DeletableObserver{
     synchronized public void delete(Deletable ps) {
         //TODO find a better method
         objects.remove(ps);
-        ArrayList<InventoryObject> loot = null;
         if(ps instanceof Monster){
             ((Monster) ps).dropAll();
             ((Monster) ps).stopThread();
@@ -134,7 +122,7 @@ public class Game implements DeletableObserver{
         notifyView();
     }
 
-    public void clean(){ // clears list of GameObject and stops every thread
+    private void clean(){ // clears list of GameObject and stops every thread
         for(GameObject object : objects){
             if(object instanceof Monster){
                 ((Monster) object).stopThread();
