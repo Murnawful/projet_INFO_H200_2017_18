@@ -18,7 +18,7 @@ public class MapBuilder {
     private Game game;
     private int size;
     private Player player = null;
-    private ArrayList<GameObject> objects = new ArrayList<>();
+    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
     private ArrayList<InventoryObject> loot;
     private MapExit mapExit;
 
@@ -64,7 +64,7 @@ public class MapBuilder {
             System.out.println(e);
         }
         game.setGameObjects(objects); // returns the list of objects to Game
-        objects = new ArrayList<>(); // empties the list
+        objects = new ArrayList<GameObject>(); // empties the list
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////<mapMethods>
@@ -134,7 +134,7 @@ public class MapBuilder {
                 GameObject creation = CreateObject(text,loot);
                 creation.attachDeletable(game);
                 objects.add(creation);
-                loot = new ArrayList<>(); //reinitializing loot
+                loot = new ArrayList<InventoryObject>(); //reinitializing loot
             } else{ //Creating loot for the container; WARNING: Loot objects do not count in number of GameObjects (thus i-=1) !!!
                 text = in.readLine().split(" ");
                 GameObject creation = CreateObject(text,null);

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import Controller.Keyboard;
 import Moving.Player;
 import Objects.GameObject;
 
@@ -13,6 +14,8 @@ public class Window {
 
     private Map map;
     private Dimension dim;
+    private Keyboard keyboard;
+    boolean KeyboardSet = false;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
@@ -34,16 +37,11 @@ public class Window {
         this.map.redraw();
     }
 
-    public void swingAxe(){
-        map.swingAxe();
-        this.map.redraw();
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setInventoryState(boolean inventoryState){
         map.setInventoryState(inventoryState);
-        this.map.redraw();
+        keyboard.setInventoryState(inventoryState);
     }
 
     public void setSize(int size){
@@ -52,6 +50,8 @@ public class Window {
 
     public void setKeyListener(KeyListener keyboard) {
         this.map.addKeyListener(keyboard);
+        this.keyboard = (Keyboard) keyboard;
+        this.KeyboardSet = true; //The keyboard is initialiazed
     }
 
     public void setGameObjects(ArrayList<GameObject> objects) {
@@ -59,8 +59,11 @@ public class Window {
     }
 
     public void setPlayer(Player player) {
-        this.map.setPlayer(player);
-    }
+      this.map.setPlayer(player);
+      if(this.KeyboardSet){
+        this.keyboard.setPlayer(player);
+      }
+   }
 
     public void setInvX(int numInvX){
         map.setInvX(numInvX);

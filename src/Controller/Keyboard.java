@@ -81,13 +81,7 @@ public class Keyboard implements KeyListener {
         int key = event.getKeyCode();
         switch (key) {
             case KeyEvent.VK_I:
-                if (inventoryOn){
-                    inventoryOn = false;
-                }
-                else{
-                    inventoryOn = true;
-                }
-                game.setInventoryState(inventoryOn);
+                game.switchInventoryState();
                 break;
         }
     }
@@ -95,4 +89,8 @@ public class Keyboard implements KeyListener {
     public void setPlayer(Player p){
         this.p = p;
     }
+    
+    public void setInventoryState(boolean inventoryOn){
+      this.inventoryOn = inventoryOn;
+  }
 }

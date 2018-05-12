@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class Game implements DeletableObserver{
 
-    private ArrayList<GameObject> objects = new ArrayList<>();
+    private ArrayList<GameObject> objects = new ArrayList<GameObject>();
     private ArrayList<MapExit> allExit = new ArrayList<MapExit>();
     private Player player;
     private Window window;
@@ -19,6 +19,7 @@ public class Game implements DeletableObserver{
     private int numInvY = 2;
     private int numInvX = 5;
     private Keyboard keyboard;
+    private boolean inventoryOn = false;
 
     ////////////////////////////////////////////////////////////////////////////////////////<Constructor>
 
@@ -43,15 +44,18 @@ public class Game implements DeletableObserver{
         Player player = ((Player) objects.get(playerNumber));
         System.out.println(player.getPosX() + ":" + player.getPosY());
     }
-
-    public void swingAxe(){
-        window.swingAxe();
-    }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////<windowMethods>
 
-    public void setInventoryState(boolean inventoryState){
-        window.setInventoryState(inventoryState);
+    public void switchInventoryState() {
+      if (inventoryOn){
+        inventoryOn = false;
+      }
+      else{
+        inventoryOn = true;
+      }
+      window.setInventoryState(inventoryOn);
+      this.notifyView();
     }
 
     public void notifyView() {
@@ -94,7 +98,6 @@ public class Game implements DeletableObserver{
     synchronized public void delete(Deletable ps) {
         //TODO find a better method
         objects.remove(ps);
-        ArrayList<InventoryObject> loot = null;
         if(ps instanceof Monster){
             ((Monster) ps).dropAll();
             ((Monster) ps).stopThread();

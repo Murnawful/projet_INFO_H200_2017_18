@@ -8,9 +8,7 @@ import Objects.GameObject;
 import Objects.InventoryObject;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.*;
 
@@ -24,7 +22,6 @@ public class Map extends JPanel {
     private Player player;
     private boolean inventoryState;
 
-    private boolean axeSwung = false;
     private int size;
     private int addBlastRange = 0; // 1 for true, 0 for false
 
@@ -91,9 +88,6 @@ public class Map extends JPanel {
         }
         if( getInventoryState()){
             paintInventory(g);
-        }
-        if(axeSwung){
-            paintAxe(g);
         }
     }
 
@@ -221,28 +215,13 @@ public class Map extends JPanel {
             g.drawImage(image, (xic)*invWidth/(numInvX+1)-side/2, mapHeight-invHeight + (yic)*invHeight/(numInvY+1) - side/2, side, side, this);
         }
     }
-
-    public void paintBlast(Graphics g){
-
-    }
-
-    private void paintAxe(Graphics g){
-        Image image = getToolkit().getImage("src/Images/axe.png");
-        g.drawImage(image, posIc[1], posIc[1], invWidth, invHeight, this);
-    }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////<diverseMethods>
 
     public void redraw() {
         this.repaint();
     }
-
-    ////////////////////////////////////////////////////////////////////////////////////////<movingMethods>
-
-    public void swingAxe(){
-
-    }
-
+    
     ////////////////////////////////////////////////////////////////////////////////////////<setMethods>
 
     public void setObjects(ArrayList<GameObject> objects) {
